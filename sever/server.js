@@ -5,8 +5,10 @@ const path = require("path");
 const artist = require("./models/artist");
 const album = require("./models/album");
 const song = require("./models/song");
-
+const user = require("./models/user")
 const app = express();
+app.use(express.static(path.join(__dirname, "..", "client")));
+
 app.use(express.urlencoded({ extended: true }));
 const connectString =
 	"mongodb+srv://tracktracer9971:gravitySwallowsLight@tracktracer.qvyluxx.mongodb.net/?retryWrites=true&w=majority&appName=TrackTracer";
@@ -85,87 +87,87 @@ app.get("/auth", async (req, res) => {
 	res.json({ message: "Access token obtained successfully", accessToken });
 });
 
-app.get("/linkinPark", async (req, res) => {
-	//let album_name = [];
-	try {
-		if (!accessToken) {
-			await getAccessToken();
-			if (!accessToken) {
-				res.status(500).json({ error: "Failed to get access token" });
-				return;
-			}
-		}
-		for (let i = 0; i < artist_list.length; i++) {
-			const response1 = await axios.get(
-				"https://api.spotify.com/v1/search",
-				{
-					params: {
-						q: artist_list[i],
-						type: "artist",
-					},
-					headers: {
-						Authorization: "Bearer " + accessToken,
-					},
-				}
-			);
+// app.get("/linkinPark", async (req, res) => {
+// 	//let album_name = [];
+// 	try {
+// 		if (!accessToken) {
+// 			await getAccessToken();
+// 			if (!accessToken) {
+// 				res.status(500).json({ error: "Failed to get access token" });
+// 				return;
+// 			}
+// 		}
+// 		for (let i = 0; i < artist_list.length; i++) {
+// 			const response1 = await axios.get(
+// 				"https://api.spotify.com/v1/search",
+// 				{
+// 					params: {
+// 						q: artist_list[i],
+// 						type: "artist",
+// 					},
+// 					headers: {
+// 						Authorization: "Bearer " + accessToken,
+// 					},
+// 				}
+// 			);
 
-			let artist_data = response1.data.artists.items[0];
-			let artist_ = new artist({
-				artistName: artist_data.name,
-				genre: artist_data.genres,
-				profile_pic: artist_data.images[1].url,
-				albums: [],
-			});
-			const response2 = await axios.get(
-				"https://api.spotify.com/v1/artists/" +
-					artist_data.id +
-					"/albums",
-				{
-					headers: {
-						Authorization: "Bearer " + accessToken,
-					},
-				}
-			);
-			let album_data = response2.data.items;
-			for (let j = 0; j < album_data.length; j++) {
-				let album_ = new album({
-					title: album_data[j].name,
-					release_date: album_data[j].release_date,
-					no_of_songs: album_data[j].total_tracks,
-					image: album_data[j].images[0].url,
-					songs: [],
-				});
+// 			let artist_data = response1.data.artists.items[0];
+// 			let artist_ = new artist({
+// 				artistName: artist_data.name,
+// 				genre: artist_data.genres,
+// 				profile_pic: artist_data.images[1].url,
+// 				albums: [],
+// 			});
+// 			const response2 = await axios.get(
+// 				"https://api.spotify.com/v1/artists/" +
+// 					artist_data.id +
+// 					"/albums",
+// 				{
+// 					headers: {
+// 						Authorization: "Bearer " + accessToken,
+// 					},
+// 				}
+// 			);
+// 			let album_data = response2.data.items;
+// 			for (let j = 0; j < album_data.length; j++) {
+// 				let album_ = new album({
+// 					title: album_data[j].name,
+// 					release_date: album_data[j].release_date,
+// 					no_of_songs: album_data[j].total_tracks,
+// 					image: album_data[j].images[0].url,
+// 					songs: [],
+// 				});
 
-				const response3 = await axios.get(
-					"https://api.spotify.com/v1/albums/" +
-						album_data[j].id +
-						"/tracks",
-					{
-						headers: {
-							Authorization: "Bearer " + accessToken,
-						},
-					}
-				);
-				let song_data = response3.data.items;
+// 				const response3 = await axios.get(
+// 					"https://api.spotify.com/v1/albums/" +
+// 						album_data[j].id +
+// 						"/tracks",
+// 					{
+// 						headers: {
+// 							Authorization: "Bearer " + accessToken,
+// 						},
+// 					}
+// 				);
+// 				let song_data = response3.data.items;
 
-				for (let k = 0; k < song_data.length; k++) {
-					let song_ = new song({
-						title: song_data[k].name,
-						artist: artist_,
-					});
-					song_.save();
-					album_.songs.push(song_);
-				}
-				album_.save();
-				artist_.albums.push(album_);
-			}
-			artist_.save();
-		}
-		res.send("Success");
-	} catch (error) {
-		console.log(error);
-	}
-});
+// 				for (let k = 0; k < song_data.length; k++) {
+// 					let song_ = new song({
+// 						title: song_data[k].name,
+// 						artist: artist_,
+// 					});
+// 					song_.save();
+// 					album_.songs.push(song_);
+// 				}
+// 				album_.save();
+// 				artist_.albums.push(album_);
+// 			}
+// 			artist_.save();
+// 		}
+// 		res.send("Success");
+// 	} catch (error) {
+// 		console.log(error);
+// 	}
+// });
 
 app.get("/", async (req, res) => {
 	res.sendFile(path.join(__dirname, "..", "client", "home.html"));
@@ -175,7 +177,7 @@ app.get("/search", async (req, res) => {
 	res.sendFile(path.join(__dirname, "..", "client", "search.html"));
 });
 
-app.post("/", async (req, res) => {
+app.post("/search", async (req, res) => {
 	console.log(req.body);
 	let to_search = req.body.query;
 	let artist_res, album_res, song_res;
@@ -194,6 +196,19 @@ app.post("/", async (req, res) => {
 	);
 });
 
-app.get("/find", (req, res) => {
-	artist.find().then((result) => res.send(result));
+app.get("/signup", async (req, res) => {
+	res.sendFile(path.join(__dirname, "..", "client", "signup.html"));
+});
+
+app.post("/", async (req, res) => {
+	console.log(req.body);
+	let newUser = new user({
+		displayName: req.body.displayname,
+		userName: req.body.username,
+		password: req.body.password
+	});
+
+	newUser.save()
+		.then((result)=> {res.send(result)});
+
 });
