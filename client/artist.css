@@ -23,8 +23,8 @@ nav {
 }
 
 .profilePic {
-  height: 150px;
-  width: 150px;
+  height: 200px;
+  width: 200px;
   background-color: azure;
   border-radius: 50%;
 }
@@ -75,6 +75,13 @@ nav {
   display: none;
 }
 
-.songs {
+.songs,
+.albumNames {
   margin-left: 2em;
+}
+
+.profilePicture {
+  height: 200px;
+  width: 200px;
+  border-radius: 50%;
 }

@@ -62,8 +62,3 @@ nav {
 .remove {
   display: none;
 }
-
-.songs {
-  display: flex;
-  flex-direction: column;
-}
