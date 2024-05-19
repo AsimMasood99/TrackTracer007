@@ -5,7 +5,7 @@ const path = require("path");
 const artist = require("./models/artist");
 const album = require("./models/album");
 const song = require("./models/song");
-const user = require("./models/user")
+const user = require("./models/user");
 const app = express();
 app.use(express.static(path.join(__dirname, "..", "client")));
 
@@ -16,7 +16,7 @@ const connectString =
 const client_id = "953a81833a4a4ca7a943b8fa0438531c";
 const client_secret = "ac2c3847cebb4e529d4e4936175626c6";
 let accessToken = null;
-
+let logged_in = false;
 const artist_list = [
 	"Ben Howard",
 	"Linkin Park",
@@ -39,6 +39,7 @@ const artist_list = [
 	"Ice Cube",
 	"Snoop Dogg",
 ];
+
 mongoose
 	.connect(connectString)
 	.then((req, res) => {
@@ -76,18 +77,7 @@ const getAccessToken = async () => {
 	}
 };
 
-app.get("/auth", async (req, res) => {
-	if (!accessToken) {
-		await getAccessToken();
-		if (!accessToken) {
-			res.status(500).json({ error: "Failed to get access token" });
-			return;
-		}
-	}
-	res.json({ message: "Access token obtained successfully", accessToken });
-});
-
-// app.get("/linkinPark", async (req, res) => {
+// app.get("/loadData", async (req, res) => {
 // 	//let album_name = [];
 // 	try {
 // 		if (!accessToken) {
@@ -170,18 +160,19 @@ app.get("/auth", async (req, res) => {
 // });
 
 app.get("/", async (req, res) => {
-	res.sendFile(path.join(__dirname, "..", "client", "home.html"));
+	if (!logged_in) res.redirect("/login");
+	else res.sendFile(path.join(__dirname, "..", "client", "home.html"));
 });
 
 app.get("/search", async (req, res) => {
 	res.sendFile(path.join(__dirname, "..", "client", "search.html"));
 });
 
-app.post("/search", async (req, res) => {
+let artist_res, album_res, song_res;
+app.post("/api", async (req, res) => {
 	console.log(req.body);
 	let to_search = req.body.query;
-	let artist_res, album_res, song_res;
-	const find_artist = artist.find({ artistName: to_search });
+	const find_artist = artist.findOne({ artistName: to_search });
 	const find_album = album.find({ title: to_search });
 	const find_song = song.find({ title: to_search });
 
@@ -191,24 +182,105 @@ app.post("/search", async (req, res) => {
 			album_res = res2;
 			song_res = res3;
 
-			res.send([artist_res, album_res, song_res]);
+			if (artist_res) {
+				res.redirect("/api/artist");
+			} else if (album_res) res.redirect("/api/album");
+			else res.redirect("/api/song");
 		}
 	);
 });
+
+app.get("/api/artist", async (req, res) => {
+    console.log(artist_res)
+    try {
+        const result = {
+            artistname: artist_res.artistName,
+            genre: artist_res.genre,
+            profilePicURL: artist_res.profile_pic,
+            albums: [],
+        };
+
+        for (const albId of artist_res.albums) {
+            const alb_res = await album.findOne({ _id: albId });
+            const alb_obj = { title: alb_res.title, songs: [] };
+
+            for (const sngId of alb_res.songs) {
+                const sng_res = await song.findOne({ _id: sngId });
+                alb_obj.songs.push(sng_res.title);
+            }
+
+            result.albums.push(alb_obj);
+        }
+
+        res.send(result);
+    } catch (err) {
+        console.error("Error fetching artist data:", err);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+
+// app.get("/api/artist", async (req, res) => {
+// 	console.log(artist_res)
+// 	result = {
+// 		artistname: artist_res.artistName,
+// 		genre: artist_res.genre,
+// 		profilePicURL: artist_res.profile_pic,
+// 		albums: [],
+// 	};
+
+// 	try {
+// 		artist_res.albums.forEach((alb) => {
+// 			album.findOne({ _id: alb }).then((alb_res) => {
+// 				alb_obj = { title: alb_res.title, songs: [] };
+// 				// console.log("------------------------------")
+// 				alb_res.songs.forEach((sng) => {
+					
+// 						song.findOne({ _id: sng }).then((sng_res) => {
+// 							// alb_obj.songs.push(sng_res.title);
+// 							console.log(alb_res.title,sng_res.title)
+// 							// console.log(sng_res.title);
+// 						});
+					
+// 						// console.log("ponchRha hon")
+// 						// result.albums.push(alb_obj);
+// 						// console.log(alb_obj)
+					
+// 				});
+// 			});
+// 		});
+// 	} catch (err) {
+// 		res.send(result);
+// 		console.log("error");
+// 	}
+// });
 
 app.get("/signup", async (req, res) => {
 	res.sendFile(path.join(__dirname, "..", "client", "signup.html"));
 });
 
-app.post("/", async (req, res) => {
-	console.log(req.body);
-	let newUser = new user({
-		displayName: req.body.displayname,
-		userName: req.body.username,
-		password: req.body.password
-	});
+// app.post("/", async (req, res) => {
+// 	console.log(req.body);
+// 	let newUser = new user({
+// 		displayName: req.body.displayname,
+// 		userName: req.body.username,
+// 		password: req.body.password
+// 	});
+// 	newUser.save()
+// 		.then((result)=> {
+// 			logged_in = true;
+// 			res.redirect('/');
+// 		});
+// });
 
-	newUser.save()
-		.then((result)=> {res.send(result)});
-
+app.get("/login", async (req, res) => {
+	res.sendFile(path.join(__dirname, "..", "client", "login.html"));
 });
+
+// app.post("/", async (req,res)=>{
+// 	let varification_res;
+// 	user.find({userName: req.body.username}).then((result)=>{
+// 		varification_res = result
+// 		console.log(varification_res);
+// 	});
+// })
