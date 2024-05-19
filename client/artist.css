@@ -1,0 +1,76 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  body {
+    padding: 0;
+    margin: 0;
+  }
+  nav {
+    height: 4em;
+    width: 100%;
+    background-color: brown;
+  }
+  
+  .top {
+    padding: 2em 2em 2em 4em;
+    display: flex;
+    gap: 2em;
+    align-items: center;
+    height: 15em;
+    background-color: aquamarine;
+  }
+  
+  .profilePic {
+    height: 150px;
+    width: 150px;
+    background-color: azure;
+    border-radius: 50%;
+  }
+  
+  .type {
+    font-size: 20px;
+    font-weight: lighter;
+  }
+  
+  .main {
+    height: 70vh;
+    padding: 3em;
+    display: flex;
+    justify-content: center;
+    gap: 2em;
+  }
+  
+  .albums,
+  .songs {
+    width: 40em;
+    background-color: blueviolet;
+    height: 65vh;
+  }
+  .loading {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+  .loader {
+    padding: 0;
+    margin: 0;
+    font-size: 50px;
+    color: wheat;
+  }
+  .mainDataBefore {
+    filter: blur(5px);
+    position: absolute;
+    width: 100%;
+  }
+  .mainDataAfter {
+    font-size: medium;
+  }
+  .remove {
+    display: none;
+  }

@@ -11,70 +11,68 @@ app.use(express.static(path.join(__dirname, "..", "client")));
 
 app.use(express.urlencoded({ extended: true }));
 const connectString =
-	"mongodb+srv://tracktracer9971:gravitySwallowsLight@tracktracer.qvyluxx.mongodb.net/?retryWrites=true&w=majority&appName=TrackTracer";
+  "mongodb+srv://tracktracer9971:gravitySwallowsLight@tracktracer.qvyluxx.mongodb.net/?retryWrites=true&w=majority&appName=TrackTracer";
 
 const client_id = "953a81833a4a4ca7a943b8fa0438531c";
 const client_secret = "ac2c3847cebb4e529d4e4936175626c6";
 let accessToken = null;
 let logged_in = false;
 const artist_list = [
-	"Ben Howard",
-	"Linkin Park",
-	"Tamino",
-	"Radiohead",
-	"Arctic Monkeys",
-	"Ed Sheeran",
-	"Coldplay",
-	"Linda Ronstadt",
-	"Daughter",
-	"Michael Jackson",
-	"The Beatles",
-	"Tom Odell",
-	"The Weeknd",
-	"Dr Dre",
-	"Eminem",
-	"xxxtentacion",
-	"bee gees",
-	"Post Malone",
-	"Ice Cube",
-	"Snoop Dogg",
+  "Ben Howard",
+  "Linkin Park",
+  "Tamino",
+  "Radiohead",
+  "Arctic Monkeys",
+  "Ed Sheeran",
+  "Coldplay",
+  "Linda Ronstadt",
+  "Daughter",
+  "Michael Jackson",
+  "The Beatles",
+  "Tom Odell",
+  "The Weeknd",
+  "Dr Dre",
+  "Eminem",
+  "xxxtentacion",
+  "bee gees",
+  "Post Malone",
+  "Ice Cube",
+  "Snoop Dogg",
 ];
 
 mongoose
-	.connect(connectString)
-	.then((req, res) => {
-		console.log("Connected");
-		app.listen(3000);
-	})
-	.catch((err) => {
-		console.log(err);
-	});
+  .connect(connectString)
+  .then((req, res) => {
+    console.log("Connected");
+    app.listen(3000);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 const getAccessToken = async () => {
-	try {
-		const response = await axios.post(
-			"https://accounts.spotify.com/api/token",
-			null,
-			{
-				params: {
-					grant_type: "client_credentials",
-				},
-				headers: {
-					"Content-Type": "application/x-www-form-urlencoded",
-					Authorization:
-						"Basic " +
-						Buffer.from(client_id + ":" + client_secret).toString(
-							"base64"
-						),
-				},
-			}
-		);
-		accessToken = response.data.access_token;
-		console.log("Access Token:", accessToken);
-	} catch (error) {
-		console.error("Failed to get access token:", error.response.data);
-		accessToken = null;
-	}
+  try {
+    const response = await axios.post(
+      "https://accounts.spotify.com/api/token",
+      null,
+      {
+        params: {
+          grant_type: "client_credentials",
+        },
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Authorization:
+            "Basic " +
+            Buffer.from(client_id + ":" + client_secret).toString("base64"),
+        },
+      }
+    );
+    accessToken = response.data.access_token;
+    console.log("Access Token:", accessToken);
+  } catch (error) {
+    console.error("Failed to get access token:", error.response.data);
+    accessToken = null;
+  }
 };
 
 // app.get("/loadData", async (req, res) => {
@@ -160,65 +158,101 @@ const getAccessToken = async () => {
 // });
 
 app.get("/", async (req, res) => {
-	if (!logged_in) res.redirect("/login");
-	else res.sendFile(path.join(__dirname, "..", "client", "home.html"));
+  if (!logged_in) res.redirect("/login");
+  else res.sendFile(path.join(__dirname, "..", "client", "home.html"));
 });
 
 app.get("/search", async (req, res) => {
-	res.sendFile(path.join(__dirname, "..", "client", "search.html"));
+  res.sendFile(path.join(__dirname, "..", "client", "search.html"));
 });
 
 let artist_res, album_res, song_res;
 app.post("/api", async (req, res) => {
-	console.log(req.body);
-	let to_search = req.body.query;
-	const find_artist = artist.findOne({ artistName: to_search });
-	const find_album = album.find({ title: to_search });
-	const find_song = song.find({ title: to_search });
+  console.log(req.body);
+  let to_search = req.body.query;
+  const find_artist = artist.findOne({ artistName: to_search });
+  const find_album = album.findOne({ title: to_search });
+  const find_song = song.findOne({ title: to_search });
 
-	Promise.all([find_artist, find_album, find_song]).then(
-		([res1, res2, res3]) => {
-			artist_res = res1;
-			album_res = res2;
-			song_res = res3;
+  Promise.all([find_artist, find_album, find_song]).then(
+    ([res1, res2, res3]) => {
+      artist_res = res1;
+      album_res = res2;
+      song_res = res3;
 
-			if (artist_res) {
-				res.redirect("/api/artist");
-			} else if (album_res) res.redirect("/api/album");
-			else res.redirect("/api/song");
-		}
-	);
+      if (artist_res) {
+        res.redirect("/api/artist");
+      } else if (album_res) res.redirect("/album");
+      else res.redirect("/api/song");
+    }
+  );
 });
 
 app.get("/api/artist", async (req, res) => {
-    console.log(artist_res)
-    try {
-        const result = {
-            artistname: artist_res.artistName,
-            genre: artist_res.genre,
-            profilePicURL: artist_res.profile_pic,
-            albums: [],
-        };
+  console.log(artist_res);
+  try {
+    const artistRes = await artist.findById(artist_res._id).populate("albums");
 
-        for (const albId of artist_res.albums) {
-            const alb_res = await album.findOne({ _id: albId });
-            const alb_obj = { title: alb_res.title, songs: [] };
-
-            for (const sngId of alb_res.songs) {
-                const sng_res = await song.findOne({ _id: sngId });
-                alb_obj.songs.push(sng_res.title);
-            }
-
-            result.albums.push(alb_obj);
-        }
-
-        res.send(result);
-    } catch (err) {
-        console.error("Error fetching artist data:", err);
-        res.status(500).send("Internal Server Error");
+    if (!artistRes) {
+      return res.status(404).json({ error: "Artist not found" });
     }
+    res.json(artistRes);
+  } catch (err) {
+    console.error("Error fetching artist data:", err);
+    res.status(500).send("Internal Server Error");
+  }
 });
 
+// app.get("/api/artist", async (req, res) => {
+//   console.log(artist_res);
+//   try {
+//     const result = {
+//       artistname: artist_res.artistName,
+//       genre: artist_res.genre,
+//       profilePicURL: artist_res.profile_pic,
+//       albums: [],
+//     };
+
+//     for (const albId of artist_res.albums) {
+//       const alb_res = await album.findOne({ _id: albId });
+//       const alb_obj = { title: alb_res.title, songs: [] };
+
+//       for (const sngId of alb_res.songs) {
+//         const sng_res = await song.findOne({ _id: sngId });
+//         alb_obj.songs.push(sng_res.title);
+//       }
+
+//       result.albums.push(alb_obj);
+//     }
+
+//     res.send(result);
+//   } catch (err) {
+//     console.error("Error fetching artist data:", err);
+//     res.status(500).send("Internal Server Error");
+//   }
+// });
+
+app.get("/api/album", async (req, res) => {
+  try {
+    // Find the album by its ID
+    const albumRes = await album.findById(album_res._id).populate("songs");
+
+    if (!albumRes) {
+      console.log("Album not found");
+      return;
+    }
+
+    // Access all the populated songs
+
+    res.json(albumRes);
+  } catch (error) {
+    console.error("Error:", error.message);
+  }
+});
+
+app.get("/album", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "client", "album.html"));
+});
 
 // app.get("/api/artist", async (req, res) => {
 // 	console.log(artist_res)
@@ -235,17 +269,17 @@ app.get("/api/artist", async (req, res) => {
 // 				alb_obj = { title: alb_res.title, songs: [] };
 // 				// console.log("------------------------------")
 // 				alb_res.songs.forEach((sng) => {
-					
+
 // 						song.findOne({ _id: sng }).then((sng_res) => {
 // 							// alb_obj.songs.push(sng_res.title);
 // 							console.log(alb_res.title,sng_res.title)
 // 							// console.log(sng_res.title);
 // 						});
-					
+
 // 						// console.log("ponchRha hon")
 // 						// result.albums.push(alb_obj);
 // 						// console.log(alb_obj)
-					
+
 // 				});
 // 			});
 // 		});
@@ -256,7 +290,7 @@ app.get("/api/artist", async (req, res) => {
 // });
 
 app.get("/signup", async (req, res) => {
-	res.sendFile(path.join(__dirname, "..", "client", "signup.html"));
+  res.sendFile(path.join(__dirname, "..", "client", "signup.html"));
 });
 
 // app.post("/", async (req, res) => {
@@ -274,7 +308,7 @@ app.get("/signup", async (req, res) => {
 // });
 
 app.get("/login", async (req, res) => {
-	res.sendFile(path.join(__dirname, "..", "client", "login.html"));
+  res.sendFile(path.join(__dirname, "..", "client", "login.html"));
 });
 
 // app.post("/", async (req,res)=>{
