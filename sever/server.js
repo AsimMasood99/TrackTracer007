@@ -181,7 +181,7 @@ app.post("/api", async (req, res) => {
       song_res = res3;
 
       if (artist_res) {
-        res.redirect("/api/artist");
+        res.redirect("/artist");
       } else if (album_res) res.redirect("/album");
       else res.redirect("/api/song");
     }
@@ -192,11 +192,15 @@ app.get("/api/artist", async (req, res) => {
   console.log(artist_res);
   try {
     const artistRes = await artist.findById(artist_res._id).populate("albums");
+    const songsResult = await album
+      .findById(artistRes.albums[0])
+      .populate("songs");
 
     if (!artistRes) {
       return res.status(404).json({ error: "Artist not found" });
     }
-    res.json(artistRes);
+
+    res.json([artistRes, songsResult]);
   } catch (err) {
     console.error("Error fetching artist data:", err);
     res.status(500).send("Internal Server Error");
@@ -293,6 +297,23 @@ app.get("/signup", async (req, res) => {
   res.sendFile(path.join(__dirname, "..", "client", "signup.html"));
 });
 
+app.get("/artist", async (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "client", "artist.html"));
+});
+
+// app.post("/", async (req, res) => {
+// 	console.log(req.body);
+// 	let newUser = new user({
+// 		displayName: req.body.displayname,
+// 		userName: req.body.username,
+// 		password: req.body.password
+// 	});
+// 	newUser.save()
+// 		.then((result)=> {
+// 			logged_in = true;
+// 			res.redirect('/');
+// 		});
+// });
 // app.post("/", async (req, res) => {
 // 	console.log(req.body);
 // 	let newUser = new user({
