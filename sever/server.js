@@ -183,7 +183,7 @@ app.post("/api", async (req, res) => {
       if (artist_res) {
         res.redirect("/artist");
       } else if (album_res) res.redirect("/album");
-      else res.redirect("/api/song");
+      else res.redirect("/song");
     }
   );
 });
@@ -258,6 +258,20 @@ app.get("/album", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "client", "album.html"));
 });
 
+app.get("/api/song", async (req, res) => {
+  try {
+    let songRes = await song.findById(song_res);
+    let artistName = await artist.findById(songRes.artist);
+    if (!songRes) {
+      console.log("Song not found");
+      return;
+    }
+    res.json([songRes, artistName]);
+  } catch (error) {
+    console.error("Error:", error.message);
+  }
+});
+
 // app.get("/api/artist", async (req, res) => {
 // 	console.log(artist_res)
 // 	result = {
@@ -301,6 +315,9 @@ app.get("/artist", async (req, res) => {
   res.sendFile(path.join(__dirname, "..", "client", "artist.html"));
 });
 
+app.get("/song", async (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "client", "song.html"));
+});
 // app.post("/", async (req, res) => {
 // 	console.log(req.body);
 // 	let newUser = new user({

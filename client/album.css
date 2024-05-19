@@ -20,8 +20,8 @@ nav {
 }
 
 .profilePic {
-  height: 150px;
-  width: 150px;
+  height: 200px;
+  width: 200px;
   background-color: azure;
   border-radius: 50%;
 }
@@ -34,6 +34,9 @@ nav {
 .main {
   height: 70vh;
   padding: 3em 3em 3em 6em;
+  background-color: rgb(37, 90, 72);
+  width: 50%;
+  margin-top: 3em;
 }
 
 .loading {
@@ -61,4 +64,9 @@ nav {
 }
 .remove {
   display: none;
+}
+.profilePicture {
+  height: 200px;
+  width: 200px;
+  border-radius: 50%;
 }
