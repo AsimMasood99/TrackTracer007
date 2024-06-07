@@ -9,5 +9,12 @@ const songSchema = new schema({
     artist: {
         type: schema.Types.ObjectId,
         required: true
+    },
+    coverPic: {
+        type: String,
+        required: true
     }
 })
+
+const song = mongoose.model('song', songSchema);
+module.exports = song;

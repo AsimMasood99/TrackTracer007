@@ -8,14 +8,21 @@
     <title>Login</title>
 </head>
 <body>
-    <form action="/lol">
-        <label for="Username">Username:</label>
-        <input type="text" name="username">
-        <label for="password">Password:</label>
-        <input type="text" name="password">
-        <button>login</button>
-    </form>
-    <div>Dont have an account?</div>
-    <button id="singin">Create Account</button>
+    <div class="main">
+        <div class="content">
+            <form class = "login_form" action="/login" method="post">
+                <label id="formItems" for="Username">Username:</label>
+                <input id="formItems" type="text" name="username">
+                <label id="formItems" for="password">Password:</label>
+                <input id="formItems" type="text" name="password">
+                <button id="formItems">login</button>
+                <div class="error_msg no_error_msg"> Incorrect username or password</div>
+            </form>
+            <div>
+                <div>Dont have an account?</div>
+                <a href="/signup"><button id="singin">Create Account</button><a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
