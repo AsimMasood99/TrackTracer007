@@ -212,11 +212,10 @@ app.get("/api/artist", async (req, res) => {
 		console.error("Error fetching artist data:", err);
 		res.status(500).send("Internal Server Error");
 	}
-})
+});
 
 app.get("/api/album", async (req, res) => {
 	try {
-	
 		const albumRes = await album.findById(album_res._id).populate("songs");
 
 		if (!albumRes) {
@@ -234,91 +233,56 @@ app.get("/album", (req, res) => {
 });
 
 app.get("/api/song", async (req, res) => {
-  try {
-    let songRes = await song.findById(song_res);
-    let artistName = await artist.findById(songRes.artist);
-    if (!songRes) {
-      console.log("Song not found");
-      return;
-    }
-    res.json([songRes, artistName]);
-  } catch (error) {
-    console.error("Error:", error.message);
-  }
+	try {
+		let songRes = await song.findById(song_res);
+		let artistName = await artist.findById(songRes.artist);
+		if (!songRes) {
+			console.log("Song not found");
+			return;
+		}
+		res.json([songRes, artistName]);
+	} catch (error) {
+		console.error("Error:", error.message);
+	}
 });
 
-// app.get("/api/artist", async (req, res) => {
-// 	console.log(artist_res)
-// 	result = {
-// 		artistname: artist_res.artistName,
-// 		genre: artist_res.genre,
-// 		profilePicURL: artist_res.profile_pic,
-// 		albums: [],
-// 	};
-
-// 	try {
-// 		artist_res.albums.forEach((alb) => {
-// 			album.findOne({ _id: alb }).then((alb_res) => {
-// 				alb_obj = { title: alb_res.title, songs: [] };
-// 				// console.log("------------------------------")
-// 				alb_res.songs.forEach((sng) => {
-
-// 						song.findOne({ _id: sng }).then((sng_res) => {
-// 							// alb_obj.songs.push(sng_res.title);
-// 							console.log(alb_res.title,sng_res.title)
-// 							// console.log(sng_res.title);
-// 						});
-
-// 						// console.log("ponchRha hon")
-// 						// result.albums.push(alb_obj);
-// 						// console.log(alb_obj)
-
-// 				});
-// 			});
-// 		});
-// 	} catch (err) {
-// 		res.send(result);
-// 		console.log("error");
-// 	}
-// });
-
-app.get("/signup", async (req, res) => {
-	res.sendFile(path.join(__dirname, "..", "client", "signup.html"));
-});
 
 app.get("/artist", async (req, res) => {
 	res.sendFile(path.join(__dirname, "..", "client", "artist.html"));
 });
 
 app.get("/song", async (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "client", "song.html"));
+	res.sendFile(path.join(__dirname, "..", "client", "song.html"));
 });
-// app.post("/", async (req, res) => {
-// 	console.log(req.body);
-// 	let newUser = new user({
-// 		displayName: req.body.displayname,
-// 		userName: req.body.username,
-// 		password: req.body.password
-// 	});
-// 	newUser.save()
-// 		.then((result)=> {
-// 			logged_in = true;
-// 			res.redirect('/');
-// 		});
-// });
-// app.post("/", async (req, res) => {
-// 	console.log(req.body);
-// 	let newUser = new user({
-// 		displayName: req.body.displayname,
-// 		userName: req.body.username,
-// 		password: req.body.password
-// 	});
-// 	newUser.save()
-// 		.then((result)=> {
-// 			logged_in = true;
-// 			res.redirect('/');
-// 		});
-// });
+
+app.get("/signup", async (req, res) => {
+	res.sendFile(path.join(__dirname, "..", "client", "signup.html"));
+});
+app.post("/signup", async (req, res) => {
+	console.log(req.body);
+	let newUser = new user({
+		displayName: req.body.displayname,
+		userName: req.body.username,
+		password: req.body.password,
+	});
+	newUser.save().then((result) => {
+		logged_in = true;
+		res.redirect("/");
+	});
+});
+
+app.post("/", async (req, res) => {
+	console.log(req.body);
+	let newUser = new user({
+		displayName: req.body.displayname,
+		userName: req.body.username,
+		password: req.body.password,
+	});
+	newUser.save().then((result) => {
+		logged_in = true;
+		res.redirect("/");
+	});
+});
 
 app.get("/login", async (req, res) => {
 	res.sendFile(path.join(__dirname, "..", "client", "login.html"));
@@ -328,24 +292,22 @@ let verification_res = null;
 app.post("/login", async (req, res) => {
 	user.findOne({ userName: req.body.username }).then((result) => {
 		verification_res = result;
-		//console.log(verification_res);
 		if (!verification_res) {
 			//console.log("user not found");
 			verification_res = "error";
-			res.redirect('/login')
+			res.redirect("/login");
 		} else if (verification_res.password == req.body.password) {
-
 			//console.log("successfull");
 			logged_in = true;
-			res.redirect('/');
+			res.redirect("/");
 		} else {
-			res.redirect('/login');
+			res.redirect("/login");
 			verification_res = "error";
 			//console.log("incorrect UserNmae or password");
 		}
 	});
 });
 
-app.get("/api/login", async(req,res)=>{
+app.get("/api/login", async (req, res) => {
 	res.json(verification_res);
-})
+});
