@@ -172,6 +172,7 @@ app.get("/search", async (req, res) => {
 });
 
 let artist_res, album_res, song_res;
+
 app.post("/api/search", async (req, res) => {
   console.log(req.body);
   let to_search = req.body.query;
@@ -241,10 +242,16 @@ app.get("/api/song", async (req, res) => {
   } catch (error) {
     console.error("Error:", error.message);
   }
-});
-
-app.get("/signup", async (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "client", "signup.html"));
+  try {
+    let artistName = await artist.findById(song_res.artist);
+    if (!song_res) {
+      console.log("Song not found");
+      return;
+    }
+    res.json([song_res, artistName]);
+  } catch (error) {
+    console.error("Error:", error.message);
+  }
 });
 
 app.get("/artist", async (req, res) => {
@@ -254,32 +261,35 @@ app.get("/artist", async (req, res) => {
 app.get("/song", async (req, res) => {
   res.sendFile(path.join(__dirname, "..", "client", "song.html"));
 });
-// app.post("/", async (req, res) => {
-// 	console.log(req.body);
-// 	let newUser = new user({
-// 		displayName: req.body.displayname,
-// 		userName: req.body.username,
-// 		password: req.body.password
-// 	});
-// 	newUser.save()
-// 		.then((result)=> {
-// 			logged_in = true;
-// 			res.redirect('/');
-// 		});
-// });
-// app.post("/", async (req, res) => {
-// 	console.log(req.body);
-// 	let newUser = new user({
-// 		displayName: req.body.displayname,
-// 		userName: req.body.username,
-// 		password: req.body.password
-// 	});
-// 	newUser.save()
-// 		.then((result)=> {
-// 			logged_in = true;
-// 			res.redirect('/');
-// 		});
-// });
+
+app.get("/signup", async (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "client", "signup.html"));
+});
+app.post("/signup", async (req, res) => {
+  console.log(req.body);
+  let newUser = new user({
+    displayName: req.body.displayname,
+    userName: req.body.username,
+    password: req.body.password,
+  });
+  newUser.save().then((result) => {
+    logged_in = true;
+    res.redirect("/");
+  });
+});
+
+app.post("/", async (req, res) => {
+  console.log(req.body);
+  let newUser = new user({
+    displayName: req.body.displayname,
+    userName: req.body.username,
+    password: req.body.password,
+  });
+  newUser.save().then((result) => {
+    logged_in = true;
+    res.redirect("/");
+  });
+});
 
 app.get("/login", async (req, res) => {
   res.sendFile(path.join(__dirname, "..", "client", "login.html"));
@@ -289,16 +299,18 @@ let verification_res = null;
 app.post("/login", async (req, res) => {
   user.findOne({ userName: req.body.username }).then((result) => {
     verification_res = result;
-
     if (!verification_res) {
+      //console.log("user not found");
       verification_res = "error";
       res.redirect("/login");
     } else if (verification_res.password == req.body.password) {
+      //console.log("successfull");
       logged_in = true;
       res.redirect("/");
     } else {
       res.redirect("/login");
       verification_res = "error";
+      //console.log("incorrect UserNmae or password");
     }
   });
 });
