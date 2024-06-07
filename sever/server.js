@@ -341,7 +341,7 @@ app.post("/api/songs", async (req, res) => {
 app.post("/api/artist", async (req, res) => {
   try {
     const albumRes = await album
-      .findOne({ title: req.body.albumName })
+      .findOne({ title: req.body.album.title })
       .populate("songs");
     res.send(albumRes);
   } catch (err) {
