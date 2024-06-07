@@ -233,6 +233,55 @@ app.get("/album", (req, res) => {
 	res.sendFile(path.join(__dirname, "..", "client", "album.html"));
 });
 
+app.get("/api/song", async (req, res) => {
+  try {
+    let songRes = await song.findById(song_res);
+    let artistName = await artist.findById(songRes.artist);
+    if (!songRes) {
+      console.log("Song not found");
+      return;
+    }
+    res.json([songRes, artistName]);
+  } catch (error) {
+    console.error("Error:", error.message);
+  }
+});
+
+// app.get("/api/artist", async (req, res) => {
+// 	console.log(artist_res)
+// 	result = {
+// 		artistname: artist_res.artistName,
+// 		genre: artist_res.genre,
+// 		profilePicURL: artist_res.profile_pic,
+// 		albums: [],
+// 	};
+
+// 	try {
+// 		artist_res.albums.forEach((alb) => {
+// 			album.findOne({ _id: alb }).then((alb_res) => {
+// 				alb_obj = { title: alb_res.title, songs: [] };
+// 				// console.log("------------------------------")
+// 				alb_res.songs.forEach((sng) => {
+
+// 						song.findOne({ _id: sng }).then((sng_res) => {
+// 							// alb_obj.songs.push(sng_res.title);
+// 							console.log(alb_res.title,sng_res.title)
+// 							// console.log(sng_res.title);
+// 						});
+
+// 						// console.log("ponchRha hon")
+// 						// result.albums.push(alb_obj);
+// 						// console.log(alb_obj)
+
+// 				});
+// 			});
+// 		});
+// 	} catch (err) {
+// 		res.send(result);
+// 		console.log("error");
+// 	}
+// });
+
 app.get("/signup", async (req, res) => {
 	res.sendFile(path.join(__dirname, "..", "client", "signup.html"));
 });
@@ -241,6 +290,9 @@ app.get("/artist", async (req, res) => {
 	res.sendFile(path.join(__dirname, "..", "client", "artist.html"));
 });
 
+app.get("/song", async (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "client", "song.html"));
+});
 // app.post("/", async (req, res) => {
 // 	console.log(req.body);
 // 	let newUser = new user({
