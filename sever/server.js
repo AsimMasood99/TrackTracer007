@@ -320,6 +320,9 @@ app.get("/api/login", async (req, res) => {
 });
 
 app.post("/api/songs", async (req, res) => {
+  if (req.body.album) {
+    album_res = req.body.album;
+  }
   console.log(req.body.songName);
   try {
     const albumRes = await album.findById(album_res._id).populate("songs");
@@ -330,6 +333,17 @@ app.post("/api/songs", async (req, res) => {
         res.redirect("/song");
       }
     });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+app.post("/api/artist", async (req, res) => {
+  try {
+    const albumRes = await album
+      .findOne({ title: req.body.albumName })
+      .populate("songs");
+    res.send(albumRes);
   } catch (err) {
     console.log(err);
   }
