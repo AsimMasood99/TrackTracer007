@@ -173,6 +173,7 @@ app.get("/search", async (req, res) => {
 });
 
 let artist_res, album_res, song_res;
+
 app.post("/api/search", async (req, res) => {
 	console.log(req.body);
 	let to_search = req.body.query;
@@ -222,25 +223,26 @@ app.get("/api/album", async (req, res) => {
 			console.log("Album not found");
 			return;
 		}
+		console.log(albumRes.songs);
 		res.json(albumRes);
 	} catch (error) {
 		console.error("Error:", error.message);
 	}
 });
 
+
 app.get("/album", (req, res) => {
 	res.sendFile(path.join(__dirname, "..", "client", "album.html"));
-});
+});	
 
 app.get("/api/song", async (req, res) => {
 	try {
-		let songRes = await song.findById(song_res);
-		let artistName = await artist.findById(songRes.artist);
-		if (!songRes) {
+		let artistName = await artist.findById(song_res.artist);
+		if (!song_res) {
 			console.log("Song not found");
 			return;
 		}
-		res.json([songRes, artistName]);
+		res.json([song_res, artistName]);
 	} catch (error) {
 		console.error("Error:", error.message);
 	}
