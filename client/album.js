@@ -3,7 +3,7 @@ fetch("/api/album").then((res) => {
     name.innerHTML = albums.title;
     profilePic.setAttribute("src", albums.image);
     albums.songs.forEach((song) => {
-      tracks.innerHTML += <li>${song.title}</li>;
+      tracks.innerHTML += <li class='tracks'>${song.title}</li>;
     });
     loader.classList.add("remove");
     mainBody.classList.remove("mainDataBefore");
@@ -16,3 +16,39 @@ let loader = document.querySelector(".loading");
 let mainBody = document.querySelector(".mainDataBefore");
 let tracks = document.querySelector(".tracks");
 let profilePic = document.querySelector(".profilePicture");
+let songs = document.querySelector(".tracks");
+
+let postData = {
+  songName: "",
+};
+songs.addEventListener("click", (e) => {
+  postData.songName = e.target.textContent;
+  console.log(postData);
+  fetch("/api/songs", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(postData),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      // Check if the response indicates a redirect
+      if (response.redirected) {
+        // If redirected, change the location of the window to the redirect URL
+        window.location.href = response.url;
+      } else {
+        // Otherwise, log the response data or handle it as needed
+        return response.json();
+      }
+    })
+    .then((data) => {
+      // Handle the response data if needed
+      console.log(data);
+    })
+    .catch((error) => {
+      console.error("There was a problem with the fetch operation:", error);
+    });
+});
