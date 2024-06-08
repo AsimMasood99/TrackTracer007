@@ -1,4 +1,4 @@
-import { userName } from "./home.js";
+import username from "./home.js";
 let reqAlbum;
 let postData = {
   album: {},
@@ -29,9 +29,9 @@ let mainBody = document.querySelector(".mainDataBefore");
 let songs = document.querySelector(".songs");
 let albums = document.querySelector(".albumNames");
 let profilePic = document.querySelector(".profilePicture");
-let user_ = document.querySelector(".account");
-console.log(userName);
-user_.textContent = userName;
+//let usr = document.querySelector(".account")
+console.log(username);
+
 albums.addEventListener("click", (e) => {
   reqAlbum.albums.forEach((album, idx) => {
     if (album.title === e.target.textContent) {
