@@ -1,3 +1,4 @@
+import username from "./home.js";
 let reqAlbum;
 let postData = {
   album: {},
@@ -8,12 +9,12 @@ fetch("/api/artist").then((res) => {
   res.json().then((artist) => {
     name.innerHTML = artist[0].artistName;
     artist[0].albums.forEach((album, idx) => {
-      albums.innerHTML += <li>${album.title}</li>;
+      albums.innerHTML += `<li>${album.title}</li>`;
     });
     reqAlbum = artist[0];
     postData.album = reqAlbum.albums[0];
     artist[1].songs.forEach((song, idx) => {
-      songs.innerHTML += <li>${song.title}</li>;
+      songs.innerHTML += `<li>${song.title}</li>`;
     });
     profilePic.setAttribute("src", artist[0].profile_pic);
     loader.classList.add("remove");
@@ -28,6 +29,8 @@ let mainBody = document.querySelector(".mainDataBefore");
 let songs = document.querySelector(".songs");
 let albums = document.querySelector(".albumNames");
 let profilePic = document.querySelector(".profilePicture");
+//let usr = document.querySelector(".account")
+console.log(username);
 
 albums.addEventListener("click", (e) => {
   reqAlbum.albums.forEach((album, idx) => {
@@ -53,7 +56,7 @@ albums.addEventListener("click", (e) => {
     .then((data) => {
       songs.innerHTML = "";
       data.songs.forEach((song) => {
-        songs.innerHTML += <li>${song.title}</li>;
+        songs.innerHTML += `<li>${song.title}</li>`;
       });
     })
     .catch((error) => {

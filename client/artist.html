@@ -5,18 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Artist</title>
     <link rel="stylesheet" href="./artist.css" />
-    <script src="./artist.js" defer></script>
+    <script type = "module" src="./artist.js" defer></script>
   </head>
   <body>
-    <div class="mainDataBefore">
-      <nav></nav>
+    <div class="mainDataBefore">  
+      <nav class="navbar">
+        <div class="home"> <a href="/">Home</a></div>
+        <div class="logo">LOGO</div>
+        <div class="account"></div>
+      </nav>
       <div class="top">
         <div class="profilePic">
           <img class="profilePicture" alt="profile_pic" />
         </div>
         <div class="info">
-          <h1 class="type">Album</h1>
+          <h1 class="type">Artist</h1>
           <h1 class="name"></h1>
+          <button id = "followBtn">Follow</button>
         </div>
       </div>
       <div class="main">

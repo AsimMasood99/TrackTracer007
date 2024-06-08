@@ -18,6 +18,7 @@ const client_id = "953a81833a4a4ca7a943b8fa0438531c";
 const client_secret = "ac2c3847cebb4e529d4e4936175626c6";
 let accessToken = null;
 let logged_in = false;
+let username = null; 
 const artist_list = [
   "Ben Howard",
   "Linkin Park",
@@ -265,6 +266,7 @@ app.get("/song", async (req, res) => {
 app.get("/signup", async (req, res) => {
   res.sendFile(path.join(__dirname, "..", "client", "signup.html"));
 });
+
 app.post("/signup", async (req, res) => {
   console.log(req.body);
   let newUser = new user({
@@ -272,19 +274,7 @@ app.post("/signup", async (req, res) => {
     userName: req.body.username,
     password: req.body.password,
   });
-  newUser.save().then((result) => {
-    logged_in = true;
-    res.redirect("/");
-  });
-});
-
-app.post("/", async (req, res) => {
-  console.log(req.body);
-  let newUser = new user({
-    displayName: req.body.displayname,
-    userName: req.body.username,
-    password: req.body.password,
-  });
+  username = req.body.displayname;
   newUser.save().then((result) => {
     logged_in = true;
     res.redirect("/");
@@ -306,6 +296,7 @@ app.post("/login", async (req, res) => {
     } else if (verification_res.password == req.body.password) {
       //console.log("successfull");
       logged_in = true;
+      username = verification_res.userName; 
       res.redirect("/");
     } else {
       res.redirect("/login");
@@ -348,3 +339,9 @@ app.post("/api/artist", async (req, res) => {
     console.log(err);
   }
 });
+
+
+app.get("/api/username", async (req, res) =>{
+  res.send({usr: username});
+
+})

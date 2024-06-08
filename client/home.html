@@ -4,16 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TrackTracer</title>
+    <link rel="stylesheet" href="./home.css">
+    <script type = "module" src="./home.js" defer></script>
 </head>
 <body>
-    <nav>
-        <ul>
-            <li>
-                <a href="/signup"><button>SignUp</button></a>
-                <a href="/login"><button>Login</button></a>
-            </li>
-        </ul>
+    <header class = "header"></header>
+    <nav class = "navbar">
+        <div class = 'logo'>Logo</div>
+        <div class="account"></div>
     </nav>
-    <a href ="/search"><button>Search</button></a>
+    <div class="searchWrap">
+        <form class = "searchForm" action="/api/search" method="post">
+            <input type="text" name = "query">
+            <button id = "searchButton">Search</button>
+        </form>
+    </div>
+    <div class="mainContent">
+        <div class="artists"></div>
+        <div class="playlists"></div>
+        <div class="likedSongs"></div>
+    </div>
+    <footer>
+        Asim, shoaib
+    </footer>
+
+    
 </body>
 </html>

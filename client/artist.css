@@ -7,10 +7,15 @@ body {
   padding: 0;
   margin: 0;
 }
-nav {
+.navbar {
   height: 4em;
   width: 100%;
   background-color: brown;
+  display: flex;
+  justify-content: space-between;
+  padding: 1em;
+  border: 3px solid black;
+  border-radius: 2px;
 }
 
 .top {
@@ -84,4 +89,13 @@ nav {
   height: 200px;
   width: 200px;
   border-radius: 50%;
+}
+
+#followBtn {
+  height: 2em;
+  width: 5em;
+}
+
+.info {
+  gap: 2em;
 }
