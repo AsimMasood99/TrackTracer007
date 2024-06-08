@@ -51,7 +51,12 @@ body {
 .songsWrap {
   width: 40em;
   background-color: blueviolet;
-  height: 65vh;
+  height: 75vh;
+  padding: 2em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 .loading {
   height: 100%;
@@ -98,4 +103,17 @@ body {
 
 .info {
   gap: 2em;
+}
+
+ul {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  overflow-x: hidden;
+  /* overflow-y: scroll; */
+}
+
+li {
+  list-style: none;
+  border: 2px solid black;
 }

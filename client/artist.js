@@ -4,7 +4,7 @@ let postData = {
   album: {},
   songName: "",
 };
-
+let songCount = 0;
 fetch("/api/artist").then((res) => {
   res.json().then((artist) => {
     name.innerHTML = artist[0].artistName;
@@ -15,7 +15,15 @@ fetch("/api/artist").then((res) => {
     postData.album = reqAlbum.albums[0];
     artist[1].songs.forEach((song, idx) => {
       songs.innerHTML += <li>${song.title}</li>;
+      songCount++;
     });
+    if (songCount <= 12) {
+      songs.style.overflowY = "hidden";
+      songCount = 0;
+    } else {
+      songs.style.overflowY = "scroll";
+      songCount = 0;
+    }
     profilePic.setAttribute("src", artist[0].profile_pic);
     loader.classList.add("remove");
     mainBody.classList.remove("mainDataBefore");
@@ -29,8 +37,6 @@ let mainBody = document.querySelector(".mainDataBefore");
 let songs = document.querySelector(".songs");
 let albums = document.querySelector(".albumNames");
 let profilePic = document.querySelector(".profilePicture");
-//let usr = document.querySelector(".account")
-console.log(username);
 
 albums.addEventListener("click", (e) => {
   reqAlbum.albums.forEach((album, idx) => {
@@ -57,7 +63,16 @@ albums.addEventListener("click", (e) => {
       songs.innerHTML = "";
       data.songs.forEach((song) => {
         songs.innerHTML += <li>${song.title}</li>;
+        songCount++;
       });
+      console.log(songCount);
+      if (songCount <= 12) {
+        songs.style.overflowY = "hidden";
+        songCount = 0;
+      } else {
+        songs.style.overflowY = "scroll";
+        songCount = 0;
+      }
     })
     .catch((error) => {
       console.error("There was a problem with the fetch operation:", error);
