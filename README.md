@@ -1,7 +1,7 @@
 # TrackTracer007
 A Comprehensive Database for Managing Artists, Albums, and Songs
 
-### Project Overview
+## Project Overview
 TrackTracer007 is a dynamic database application designed to revolutionize the way users interact with music. It allows users to follow artists, like songs, save albums, create playlists, and even follow other users. With TrackTracer007, users can also view others' followed artists and liked songs, and collaborate on playlists with mutual followers, fostering a community-based music experience.
 
 ### Problem Statement
