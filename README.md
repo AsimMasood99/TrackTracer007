@@ -118,8 +118,162 @@ const albumSchema = new schema({
 const album = mongoose.model('album', albumSchema);
 module.exports = album;
 ```
-
 <br />
+##### Artists
+```ruby
+const mongoose = require("mongoose");
+const schema = mongoose.Schema;
+const user = require("./user");
+const album = require("./album");
+const artistSchema = new schema({
+  artistName: {
+    type: String,
+    required: true,
+  },
+
+  genre: [
+    {
+      type: String,
+      required: true,
+    },
+  ],
+  
+  profile_pic: {
+    type: String,
+    required: true,
+  },
+  follower: [{ type: schema.Types.ObjectId, ref: "user", required: false }],
+  albums: [{ type: schema.Types.ObjectId, ref: "album", required: true }],
+});
+const artist = mongoose.model("artist", artistSchema);
+module.exports = artist;
+```
+<br />
+#### Playlist 
+```ruby
+const mongoose = require("mongoose");
+const schema = mongoose.Schema;
+const playlistSchema = new schema({
+  playlistName: {
+    type: String,
+    required: true,
+  },
+  isCollaborative: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
+  users: [
+    {
+      type: schema.Types.ObjectId,
+      ref: "user",
+      required: true,
+    },
+  ],
+  songs: [
+    {
+      type: schema.Types.ObjectId,
+      ref: "song",
+      required: false,
+    },
+  ],
+});
+
+const playlist = mongoose.model("playlist", playlistSchema);
+module.exports = playlist;
+```
+<br />
+#### Songs 
+```ruby
+const mongoose = require('mongoose');
+const schema = mongoose.Schema;
+const artist = require("./artist");
+const songSchema = new schema({
+    title: {
+        type: String,
+        required: true
+    },
+    artist: {
+        type: schema.Types.ObjectId,
+        required: true
+    },
+    coverPic: {
+        type: String,
+        required: true
+    }
+})
+
+const song = mongoose.model('song', songSchema);
+module.exports = song;
+```
+<br />
+#### Users 
+```ruby
+const mongoose = require("mongoose");
+const schema = mongoose.Schema;
+const artist = require("./artist");
+const userSchema = new schema({
+  displayName: {
+    type: String,
+    required: true,
+  },
+  userName: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  following: [
+    {
+      type: schema.Types.ObjectId,
+      ref: "artist",
+      required: false,
+    },
+  ],
+  likedSongs: [
+    {
+      type: schema.Types.ObjectId,
+      ref: "song",
+      required: false,
+    },
+  ],
+  playlist: [
+    {
+      type: schema.Types.ObjectId,
+      ref: "playlist",
+      required: false,
+    },
+  ],
+  friends: [
+    {
+      type: schema.Types.ObjectId,
+      ref: "user",
+      required: false,
+    },
+  ],
+  isArtist: {
+      type: Boolean,
+      required: false,
+      default: false,
+  },
+  
+  artistRef: {
+    type: schema.Types.ObjectId, 
+    ref: "artist",
+    requried: false, 
+  },
+
+});
+
+const user = mongoose.model("user", userSchema);
+module.exports = user;
+```
+<br />
+
+
 
 ### Support
 Support us by giving an A. 
