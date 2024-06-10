@@ -55,15 +55,12 @@ View show and concert timings of different artists in the Concerts section.
 <br />
 
 ### Database Design
-
-<br />
-
 #### ERD
 Our database includes the following entities:
 
 ![Screenshot 2024-06-11 001213](https://github.com/AsimMasood99/TrackTracer007/assets/130085532/8109bb9c-d99a-4718-af14-dfbc03785400)
 
-
+#### Description
 
 1. **Album**
 Attributes: Album_ID (primary key), Title, Number_of_songs, Release_date, Artist_id (foreign key).
@@ -88,7 +85,7 @@ Attributes: User_ID (foreign key), Friend_ID (foreign key).
 
 <br />
 
-#### Schmema 
+### Schmema 
 
 ![WhatsApp Image 2024-06-10 at 22 46 13_3b8b693b](https://github.com/AsimMasood99/TrackTracer007/assets/130085532/12212799-caed-4f90-8869-455ba5aed04e)
 
@@ -100,5 +97,7 @@ Attributes: User_ID (foreign key), Friend_ID (foreign key).
 
 ![WhatsApp Image 2024-06-10 at 22 46 30_15da07ea](https://github.com/AsimMasood99/TrackTracer007/assets/130085532/9cdbbbb1-308f-4537-8e19-3e2d23fce612)
 
+<br />
+
 #### Support Us
-Support us by giving an A
+Support us by giving an A. 
