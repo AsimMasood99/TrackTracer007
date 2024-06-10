@@ -18,8 +18,9 @@ Existing music applications often restrict cross-user interaction, limiting indi
 - Node.js with Express framework
 #### Database
 - MongoDB with Mongoose ODM for Node.js
+
 <br />
-<br />
+
 ### Project Features
 1. **Artist Management**
 Browse different artists and their discography.
@@ -54,7 +55,9 @@ View show and concert timings of different artists in the Concerts section.
 <br />
 
 ### Database Design
+
 <br />
+
 #### ERD
 Our database includes the following entities:
 
