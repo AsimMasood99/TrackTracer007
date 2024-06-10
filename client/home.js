@@ -20,19 +20,47 @@ try {
 username = result.usr;
 let accountInfo = document.querySelector(".account");
 accountInfo.innerHTML = username;
-let artistsList = document.querySelector(".artistList")
+let artistsList = document.querySelector(".artistList");
+let songList = document.querySelector(".songList");
+let newPlayBtn = document.querySelector(".newPlay");
+let mainContent = document.querySelector(".mainContent");
+let playlistForm = document.querySelector(".form");
+let playlist = document.querySelector(".playlistData");
 let usrDta = null;
 try {
   let res = await fetch("/api/getFollowing");
   usrDta = await res.json();
-  console.log(usrDta)
-  usrDta.following.forEach(artist => {
-    artistsList.innerHTML += `<li>${artist.artistName}</li>`
+  console.log(usrDta);
+  usrDta.following.forEach((artist) => {
+    artistsList.innerHTML += `<li>${artist.artistName}</li>`;
   });
-}
-catch(err){
+} catch (err) {
   console.log(err);
 }
-
-
+let songData = null;
+try {
+  let res = await fetch("/api/getLiked");
+  songData = await res.json();
+  songData.likedSongs.forEach((song) => {
+    songList.innerHTML += `<li>${song.title}</li>`;
+  });
+} catch (err) {
+  console.log(err);
+}
 export default username;
+
+newPlayBtn.addEventListener("click", () => {
+  playlistForm.classList.remove("hidden");
+  mainContent.style.filter = "blur(5px)";
+});
+
+try {
+  let res = await fetch("/api/getPlaylist");
+  let playList = await res.json();
+
+  playList.forEach((play) => {
+    playlist.innerHTML += `<li>${play.playlistName}</li>`;
+  });
+} catch (err) {
+  console.log(err);
+}

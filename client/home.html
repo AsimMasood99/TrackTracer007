@@ -26,8 +26,31 @@
           <ul class="artistList"></ul>
         </div>
       </div>
-      <div class="playlists"></div>
-      <div class="likedSongs"></div>
+      <div class="playlists">
+        <div class="top">
+          <h2 class="playlistNames">Your Playlists</h2>
+          <button class="newPlay">+</button>
+          <ul class="playlistData"></ul>
+        </div>
+      </div>
+      <div class="likedSongs">
+        <h2 class="Liked">Liked Songs</h2>
+        <div>
+          <ul class="songList"></ul>
+        </div>
+      </div>
+    </div>
+    <div class="form hidden">
+      <form action="/api/playlist" method="post" class="playlistForm">
+        <label for="name">Name: <input type="text" name="name" /></label>
+        <label for="collab"
+          >Is Collabarative: <input type="checkbox" name="collab"
+        /></label>
+        <label for="username"
+          >Username: <input type="text" name="username"
+        /></label>
+        <button>Submit</button>
+      </form>
     </div>
     <footer>Asim, shoaib</footer>
   </body>

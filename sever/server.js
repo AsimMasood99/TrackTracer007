@@ -6,6 +6,7 @@ const artist = require("./models/artist");
 const album = require("./models/album");
 const song = require("./models/song");
 const user = require("./models/user");
+const playlist = require("./models/playlist");
 const bodyParser = require("body-parser");
 const app = express();
 app.use(express.static(path.join(__dirname, "..", "client")));
@@ -18,7 +19,7 @@ const client_id = "953a81833a4a4ca7a943b8fa0438531c";
 const client_secret = "ac2c3847cebb4e529d4e4936175626c6";
 let accessToken = null;
 let logged_in = false;
-let username = null; 
+let username = null;
 const artist_list = [
   "Ben Howard",
   "Linkin Park",
@@ -273,7 +274,7 @@ app.post("/signup", async (req, res) => {
     displayName: req.body.displayname,
     userName: req.body.username,
     password: req.body.password,
-    following: []
+    following: [],
   });
   username = req.body.displayname;
   newUser.save().then((result) => {
@@ -297,7 +298,7 @@ app.post("/login", async (req, res) => {
     } else if (verification_res.password == req.body.password) {
       //console.log("successfull");
       logged_in = true;
-      username = verification_res.displayName; 
+      username = verification_res.displayName;
       res.redirect("/");
     } else {
       res.redirect("/login");
@@ -311,7 +312,7 @@ app.get("/api/login", async (req, res) => {
   res.json(verification_res);
 });
 
-app.post("/api/songs", async (req, res) => {
+app.get("/api/songs", async (req, res) => {
   if (req.body.album) {
     album_res = req.body.album;
   }
@@ -330,7 +331,7 @@ app.post("/api/songs", async (req, res) => {
   }
 });
 
-app.post("/api/artist", async (req, res) => {
+app.get("/api/artist", async (req, res) => {
   try {
     const albumRes = await album
       .findOne({ title: req.body.album.title })
@@ -341,24 +342,68 @@ app.post("/api/artist", async (req, res) => {
   }
 });
 
+app.get("/api/username", async (req, res) => {
+  res.send({ usr: username });
+});
 
-app.get("/api/username", async (req, res) =>{
-  res.send({usr: username});
-
-})
-
-app.post("/api/followArtist", async (req, res) =>{
+app.post("/api/followArtist", async (req, res) => {
   console.log(artist_res);
-  console.log(username)
-  let usr = await user.findOne({displayName: username});
+  console.log(username);
+  let usr = await user.findOne({ displayName: username });
   console.log(usr);
   usr.following.push(artist_res);
   await usr.save();
-  res.send({nth: "hello"});
-})
+  res.send({ nth: "hello" });
+});
 
-
-app.get('/api/getFollowing', async (req,res)=>{
-  let usr = await user.findOne({displayName: username}).populate("following");
+app.get("/api/getFollowing", async (req, res) => {
+  let usr = await user.findOne({ displayName: username }).populate("following");
   res.send(usr);
-})
+});
+
+app.post("/api/likedSong", async (req, res) => {
+  let usr = await user.findOne({ displayName: username });
+  usr.likedSongs.push(song_res);
+  await usr.save();
+  res.send({ message: "Successful" });
+});
+
+app.get("/api/getLiked", async (req, res) => {
+  let usr = await user
+    .findOne({ displayName: username })
+    .populate("likedSongs");
+  res.send(usr);
+});
+
+app.get("/loadPlay", async (req, res) => {
+  let playlist_ = new playlist({
+    playlistName: "Test",
+    isCollaborative: true,
+    users: ["6644d4425c7040daa972ad32", "6644e0921ed4a034fccece6c"],
+    songs: ["664302e40d273de2c9f29858", "664302e40d273de2c9f2985a"],
+  });
+  playlist_.save();
+  res.send("Done");
+});
+
+app.post("/api/playlist", async (req, res) => {
+  let playlist_ = new playlist({
+    playlistName: req.body.name,
+    isCollaborative: false,
+    users: [],
+  });
+
+  if (req.body.collab === "on") {
+    playlist_.isCollaborative = true;
+  }
+  let userRes = await user.findOne({ userName: req.body.username });
+  playlist_.users.push(userRes);
+  playlist_.save();
+  res.redirect("/");
+});
+
+app.get("/api/getPlaylist", async (req, res) => {
+  let usr = await user.findOne({ displayName: username });
+  let result = await playlist.find({ users: usr._id });
+  res.send(result);
+});

@@ -1,61 +1,91 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-}
-body {
+  }
+  body {
     padding: 0;
     margin: 0;
     display: flex;
     flex-direction: column;
-}
-.navbar {
+  }
+  .navbar {
     height: 4em;
     width: 100%;
     background-color: brown;
     display: flex;
     justify-content: space-between;
     padding: 1em;
-}
-
-.searchWrap{
+  }
+  
+  .searchWrap {
     padding: 2em;
     display: flex;
     justify-content: center;
     align-items: center;
-}
-.searchForm {
-   display: flex;
-   gap: 1em;
-}
-
-input {
+  }
+  .searchForm {
+    display: flex;
+    gap: 1em;
+  }
+  
+  input {
     width: 30em;
     height: 3em;
-}
-
-#searchButton{
+  }
+  
+  #searchButton {
     width: 5em;
-}
-
-.mainContent{
+  }
+  
+  .mainContent {
     display: flex;
     border: 2px solid black;
-    height: 72.5vh; 
+    height: 72.5vh;
     justify-content: space-around;
     align-items: center;
-}
-
-.artists, .playlists, .likedSongs {
+    position: relative;
+    /* filter: blur(5px); */
+  }
+  
+  .artists,
+  .playlists,
+  .likedSongs {
     height: 50vh;
     width: 30em;
     border: 2px solid black;
-}
-
-footer {
+  }
+  
+  footer {
     height: 4em;
     width: 100%;
     background-color: brown;
     padding: 1em;
-    
-}
+  }
+  .top {
+    display: flex;
+    justify-content: space-around;
+  }
+  .playlistForm {
+    display: flex;
+    flex-direction: column;
+    border: 2px solid black;
+  }
+  .form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    border: 1px solid #ccc;
+    height: 100vh;
+    width: 100vw;
+  }
+  
+  .hidden {
+    display: none;
+  }
