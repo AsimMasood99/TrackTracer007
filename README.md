@@ -55,12 +55,12 @@ View show and concert timings of different artists in the Concerts section.
 <br />
 
 ### Database Design
-#### ERD
+#### ERD:
 Our database includes the following entities:
 
 ![Screenshot 2024-06-11 001213](https://github.com/AsimMasood99/TrackTracer007/assets/130085532/8109bb9c-d99a-4718-af14-dfbc03785400)
 
-#### Description
+#### Description:
 
 1. **Album**
 Attributes: Album_ID (primary key), Title, Number_of_songs, Release_date, Artist_id (foreign key).
@@ -99,5 +99,5 @@ Attributes: User_ID (foreign key), Friend_ID (foreign key).
 
 <br />
 
-#### Support Us
+#### Support
 Support us by giving an A. 
