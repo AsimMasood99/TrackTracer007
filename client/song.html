@@ -15,10 +15,14 @@
     </nav>
     <div class="main">
       <div class="details">
+        <div class="playlistSelect hidden">
+          <form action="/api/addSong" method="post" class="playlistForm"></form>
+        </div>
         <div class="info">
           <h1 class="title"></h1>
           <h1 class="artist"></h1>
           <button class="like">Like</button>
+          <button class="addPlay">Add to playlist</button>
         </div>
       </div>
       <div class="backGround"></div>

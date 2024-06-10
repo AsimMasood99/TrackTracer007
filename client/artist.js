@@ -75,7 +75,7 @@ albums.addEventListener("click", (e) => {
       console.log(postData);
     }
   });
-
+  console.log(postData);
   fetch("/api/artist", {
     method: "POST",
     headers: {

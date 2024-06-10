@@ -15,6 +15,10 @@ let backGround = document.querySelector(".backGround");
 let title = document.querySelector(".title");
 let artist = document.querySelector(".artist");
 let likeBtn = document.querySelector(".like");
+let playlistBtn = document.querySelector(".addPlay");
+let playlistDiv = document.querySelector(".playlistSelect");
+let songInfo = document.querySelector(".info");
+let form = document.querySelector(".playlistForm");
 
 fetch("/api/song").then((res) => {
   res.json().then((song) => {
@@ -39,4 +43,23 @@ likeBtn.addEventListener("click", () => {
     .then((data) => {
       console.log(data);
     });
+});
+
+playlistBtn.addEventListener("click", async () => {
+  playlistDiv.classList.remove("hidden");
+  songInfo.classList.add("hidden");
+
+  try {
+    let res = await fetch("/api/getPlaylist");
+    let playList = await res.json();
+
+    playList.forEach((play) => {
+      form.innerHTML += `<label>${play.playlistName}
+      <input class="checkbox" type="checkbox" name="${play.playlistName}"
+    /></label>`;
+    });
+    form.innerHTML += "<button>Add</button>";
+  } catch (err) {
+    console.log(err);
+  }
 });

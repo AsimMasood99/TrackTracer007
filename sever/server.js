@@ -8,6 +8,7 @@ const song = require("./models/song");
 const user = require("./models/user");
 const playlist = require("./models/playlist");
 const bodyParser = require("body-parser");
+const { STATUS_CODES } = require("http");
 const app = express();
 app.use(express.static(path.join(__dirname, "..", "client")));
 app.use(bodyParser.json());
@@ -312,7 +313,7 @@ app.get("/api/login", async (req, res) => {
   res.json(verification_res);
 });
 
-app.get("/api/songs", async (req, res) => {
+app.post("/api/songs", async (req, res) => {
   if (req.body.album) {
     album_res = req.body.album;
   }
@@ -331,7 +332,7 @@ app.get("/api/songs", async (req, res) => {
   }
 });
 
-app.get("/api/artist", async (req, res) => {
+app.post("/api/artist", async (req, res) => {
   try {
     const albumRes = await album
       .findOne({ title: req.body.album.title })
@@ -375,16 +376,16 @@ app.get("/api/getLiked", async (req, res) => {
   res.send(usr);
 });
 
-app.get("/loadPlay", async (req, res) => {
-  let playlist_ = new playlist({
-    playlistName: "Test",
-    isCollaborative: true,
-    users: ["6644d4425c7040daa972ad32", "6644e0921ed4a034fccece6c"],
-    songs: ["664302e40d273de2c9f29858", "664302e40d273de2c9f2985a"],
-  });
-  playlist_.save();
-  res.send("Done");
-});
+// app.get("/loadPlay", async (req, res) => {
+//   let playlist_ = new playlist({
+//     playlistName: "Test",
+//     isCollaborative: true,
+//     users: ["6644d4425c7040daa972ad32", "6644e0921ed4a034fccece6c"],
+//     songs: ["664302e40d273de2c9f29858", "664302e40d273de2c9f2985a"],
+//   });
+//   playlist_.save();
+//   res.send("Done");
+// });
 
 app.post("/api/playlist", async (req, res) => {
   let playlist_ = new playlist({
@@ -392,18 +393,147 @@ app.post("/api/playlist", async (req, res) => {
     isCollaborative: false,
     users: [],
   });
-
   if (req.body.collab === "on") {
     playlist_.isCollaborative = true;
+    let users = req.body.username.split(",");
+    let defaultUser = await user.findOne({ displayName: username });
+    users.push(defaultUser.userName);
+    let validPlay = true;
+
+    (async () => {
+      for (let idx = 0; idx < users.length; idx++) {
+        let userRes = await user.findOne({ userName: users[idx] });
+        if (!userRes) {
+          validPlay = false;
+        } else {
+          // console.log(idx);
+          playlist_.users.push(userRes);
+          userRes.playlist.push(playlist_);
+          userRes.save();
+          if (idx === users.length - 1) {
+            if (validPlay === true) {
+              playlist_.save();
+              res.redirect("/");
+            } else {
+              res.send({ error: "User not found!" });
+            }
+          }
+        }
+      }
+    })();
+  } else {
+    playlist_.isCollaborative = false;
+    let userRes = await user.findOne({ displayName: username });
+    if (!userRes) {
+      res.send({ error: "User not found!" });
+    } else {
+      playlist_.users.push(userRes);
+      userRes.playlist.push(playlist_);
+      userRes.save();
+      playlist_.save();
+      res.redirect("/");
+    }
   }
-  let userRes = await user.findOne({ userName: req.body.username });
-  playlist_.users.push(userRes);
-  playlist_.save();
-  res.redirect("/");
 });
 
 app.get("/api/getPlaylist", async (req, res) => {
   let usr = await user.findOne({ displayName: username });
   let result = await playlist.find({ users: usr._id });
   res.send(result);
+});
+
+app.post("/api/addSong", async (req, res) => {
+  const keys = Object.keys(req.body);
+  if (keys.length === 0) {
+    return res.send({ error: "No playlists selected", STATUS_CODES: 400 });
+  }
+  keys.forEach(async (key) => {
+    let result = await playlist.findOne({ playlistName: key });
+    if (!result) {
+      return res.send({ error: "Playlist not found", STATUS_CODES: 404 });
+    }
+    result.songs.push(song_res);
+    await result.save();
+  });
+  res.redirect("/song");
+});
+
+app.get("/api/allUsers", async (req, res) => {
+  try {
+    const users = await user.find({});
+    let result = users.filter((user) => user.displayName !== username);
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(500).send("An error occurred while fetching users.");
+  }
+});
+
+app.get("/api/getFriends", async (req, res) => {
+  try {
+    let currentUser = await user
+      .findOne({ displayName: username })
+      .populate("friends");
+    res.status(200).json(currentUser.friends);
+  } catch (err) {
+    res.status(500).send("An error occured while fetching friends.");
+  }
+});
+
+app.post("/api/addFriends", async (req, res) => {
+  try {
+    const keys = Object.keys(req.body);
+    let currentUser = await user.findOne({ displayName: username });
+
+    // Collect all promises for finding friends
+    const friendPromises = keys.map((key) => user.findOne({ userName: key }));
+    let friends = await Promise.all(friendPromises);
+
+    // Update friends and currentUser's friends list
+    friends.forEach((friend) => {
+      if (friend) {
+        currentUser.friends.push(friend);
+        friend.friends.push(currentUser);
+      }
+    });
+
+    // Save all friend documents sequentially
+    for (let friend of friends) {
+      if (friend) {
+        await friend.save();
+      }
+    }
+
+    // Save currentUser after all friends have been saved
+    await currentUser.save();
+    res.redirect("/");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("An error occurred while adding friends.");
+  }
+});
+
+app.post("/api/getFriendLiked", async (req, res) => {
+  const value = Object.values(req.body);
+  console.log(value);
+  try {
+    let result = await user.findOne({ userName: value }).populate("likedSongs");
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(500).send("An error occurred while fetching users.");
+  }
+});
+
+app.post("/api/getFriendFollowing", async (req, res) => {
+  const value = Object.values(req.body);
+  try {
+    let result = await user.findOne({ userName: value }).populate("following");
+    console.log(result);
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(500).send("An error occurred while fetching users.");
+  }
+});
+
+app.get("/api/friendPage", async (req, res) => {
+  res.redirect({ url: "friends.html" });
 });

@@ -21,6 +21,7 @@ body {
 }
 .details {
   position: absolute;
+  /* display: none; */
   z-index: 1;
   height: 80vh;
   width: 100vw;
@@ -37,6 +38,28 @@ body {
   height: 90vh;
   filter: blur(3px);
   background-color: rgb(45, 56, 56);
+  display: flex;
+  justify-content: center;
+  align-items: center;
   /* background-size: cover; */
-  /* background-repeat: no-repeat; */
+  /* background-repeat: no-repeat;*/
+}
+.playlistSelect {
+  height: 20em;
+  width: 20em;
+  background-color: blueviolet;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.playlistForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1em;
+}
+
+.hidden {
+  display: none;
 }

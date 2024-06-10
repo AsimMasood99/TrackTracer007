@@ -8,50 +8,63 @@
     <script type="module" src="./home.js" defer></script>
   </head>
   <body>
-    <header class="header"></header>
-    <nav class="navbar">
-      <div class="logo">Logo</div>
-      <div class="account"></div>
-    </nav>
+    <div class="select hidden">
+      <form action="/api/addFriends" method="post" class="friendForm"></form>
+    </div>
+    <header class="header">
+      <div class="navbar">
+        <div class="logo">
+            <img src="./Assets/user.png" id = "webLogo" alt="logo">
+            <div id="webname">TrackTrceer</div>
+        </div>
+        <div class="buttons">
+            <button class="friend">Friend</button>
+            <div class="account"></div>
+            <button>Logout</button>
+        </div>
+        </div>
+      </div>
+    </header>
     <div class="searchWrap">
       <form class="searchForm" action="/api/search" method="post">
-        <input type="text" name="query" />
+        <input type="text" name="query" placeholder="Search for artists, songs..." />
         <button id="searchButton">Search</button>
       </form>
     </div>
     <div class="mainContent">
       <div class="artists">
         <h2 class="following">Your Artists</h2>
-        <div>
-          <ul class="artistList"></ul>
-        </div>
+        <ul class="artistList"></ul>
       </div>
       <div class="playlists">
         <div class="top">
-          <h2 class="playlistNames">Your Playlists</h2>
-          <button class="newPlay">+</button>
+          <div class="plcontainer">
+            <h2 class="playlistNames">Your Playlists</h2>
+            <button class="newPlay">+</button>
+          </div>
           <ul class="playlistData"></ul>
         </div>
       </div>
       <div class="likedSongs">
         <h2 class="Liked">Liked Songs</h2>
-        <div>
-          <ul class="songList"></ul>
-        </div>
+        <ul class="songList"></ul>
       </div>
     </div>
     <div class="form hidden">
       <form action="/api/playlist" method="post" class="playlistForm">
         <label for="name">Name: <input type="text" name="name" /></label>
-        <label for="collab"
-          >Is Collabarative: <input type="checkbox" name="collab"
-        /></label>
-        <label for="username"
-          >Username: <input type="text" name="username"
-        /></label>
+        <label for="collab">
+          Is Collaborative:
+          <input class="checkbox" type="checkbox" name="collab" />
+        </label>
+        <label class="username hidden" for="username">
+          Username: <input type="text" name="username" />
+        </label>
         <button>Submit</button>
       </form>
     </div>
-    <footer>Asim, shoaib</footer>
+    <footer>
+      <p>Asim, Shoaib</p>
+    </footer>
   </body>
 </html>

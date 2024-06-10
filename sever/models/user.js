@@ -28,6 +28,20 @@ const userSchema = new schema({
       required: false,
     },
   ],
+  playlist: [
+    {
+      type: schema.Types.ObjectId,
+      ref: "playlist",
+      required: false,
+    },
+  ],
+  friends: [
+    {
+      type: schema.Types.ObjectId,
+      ref: "user",
+      required: false,
+    },
+  ],
 });
 
 const user = mongoose.model("user", userSchema);
