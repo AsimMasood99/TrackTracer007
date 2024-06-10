@@ -20,5 +20,19 @@ try {
 username = result.usr;
 let accountInfo = document.querySelector(".account");
 accountInfo.innerHTML = username;
+let artistsList = document.querySelector(".artistList")
+let usrDta = null;
+try {
+  let res = await fetch("/api/getFollowing");
+  usrDta = await res.json();
+  console.log(usrDta)
+  usrDta.following.forEach(artist => {
+    artistsList.innerHTML += <li>${artist.artistName}</li>
+  });
+}
+catch(err){
+  console.log(err);
+}
+
 
 export default username;

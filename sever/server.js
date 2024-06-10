@@ -356,3 +356,9 @@ app.post("/api/followArtist", async (req, res) =>{
   await usr.save();
   res.send({nth: "hello"});
 })
+
+
+app.get('/api/getFollowing', async (req,res)=>{
+  let usr = await user.findOne({displayName: username}).populate("following");
+  res.send(usr);
+})
