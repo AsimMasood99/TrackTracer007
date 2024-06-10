@@ -12,7 +12,7 @@ fetch("/api/getFriends")
   .then((data) => {
     firstFriend = data[0].userName;
     data.forEach((user, idx) => {
-      friends.innerHTML += `<li class="friend${idx}">${user.userName}</li>`;
+      friends.innerHTML += <li class="friend${idx}">${user.userName}</li>;
     });
     let firstFriendDOM = document.querySelector(".friend0");
 
@@ -36,13 +36,13 @@ fetch("/api/getFriends")
             return response.json();
           })
           .then((data) => {
-            likeTitle.textContent = `${friendName}'s Liked Songs`;
+            likeTitle.textContent = ${friendName}'s Liked Songs;
             data.likedSongs.forEach((song) => {
-              likedSongs.innerHTML += `<li>${song.title}</li>`;
+              likedSongs.innerHTML += <li>${song.title}</li>;
             });
             // songs.innerHTML = "";
             // data.songs.forEach((song) => {
-            //   songs.innerHTML += `<li>${song.title}</li>`;
+            //   songs.innerHTML += <li>${song.title}</li>;
             //   songCount++;
             // });
             // console.log(songCount);
@@ -76,13 +76,13 @@ fetch("/api/getFriends")
             return response.json();
           })
           .then((data) => {
-            followTitle.textContent = `${friendName}'s Followed Artists`;
+            followTitle.textContent = ${friendName}'s Followed Artists;
             data.following.forEach((follow) => {
-              followedArtists.innerHTML += `<li>${follow.artistName}</li>`;
+              followedArtists.innerHTML += <li>${follow.artistName}</li>;
             });
             // songs.innerHTML = "";
             // data.songs.forEach((song) => {
-            //   songs.innerHTML += `<li>${song.title}</li>`;
+            //   songs.innerHTML += <li>${song.title}</li>;
             //   songCount++;
             // });
             // console.log(songCount);
@@ -114,10 +114,10 @@ addFriend.addEventListener("click", (e) => {
       console.log(data);
       data.forEach((user) => {
         console.log(user);
-        friendForm.innerHTML += `<label>${user.userName}<input type="checkbox" name="${user.userName}"></label>`;
+        friendForm.innerHTML += <label>${user.userName}<input type="checkbox" name="${user.userName}"></label>;
       });
-      friendForm.innerHTML += `<button class="submit">Submit</button>`;
-      friendForm.innerHTML += `<button class = "close"> Close </button>`;
+      friendForm.innerHTML += <button class="submit">Submit</button>;
+      friendForm.innerHTML += <button class = "close"> Close </button>;
 
       let closeBtn = document.querySelector(".close");
 
