@@ -84,18 +84,42 @@ Attributes: User_ID (foreign key), Friend_ID (foreign key).
 <br />
 
 ### Schmema (Latest Database State)
+#### Albums
+```ruby
+const mongoose = require('mongoose');
+const schema = mongoose.Schema;
+const song = require('./song')
+ 
+const albumSchema = new schema({
+    title: {
+        type:String,
+        required: true
+    },
+    release_date: {
+        type:Date,
+        required: true
+    },
+    no_of_songs: {
+        type: Number,
+        required: true
+    },
+    image: {
+        type: String,
+        required: true 
+    },
+    songs:
+        [{type:schema.Types.ObjectId, 
+        ref: 'song',
+        required: true
+    }]
+        
+});
 
-![WhatsApp Image 2024-06-10 at 22 46 13_3b8b693b](https://github.com/AsimMasood99/TrackTracer007/assets/130085532/12212799-caed-4f90-8869-455ba5aed04e)
-
-![WhatsApp Image 2024-06-10 at 22 46 05_220bcf93](https://github.com/AsimMasood99/TrackTracer007/assets/130085532/f56ad1fa-6feb-4291-915a-54a51111d3d2)
-
-![WhatsApp Image 2024-06-10 at 22 45 51_befd0295](https://github.com/AsimMasood99/TrackTracer007/assets/130085532/a37bdd86-3047-4090-b47b-d284edab1bc3)
-
-![WhatsApp Image 2024-06-10 at 22 45 22_1e4d1cda](https://github.com/AsimMasood99/TrackTracer007/assets/130085532/8e2c0779-107b-4b17-afda-220a0e837e0e)
-
-![WhatsApp Image 2024-06-10 at 22 46 30_15da07ea](https://github.com/AsimMasood99/TrackTracer007/assets/130085532/9cdbbbb1-308f-4537-8e19-3e2d23fce612)
+const album = mongoose.model('album', albumSchema);
+module.exports = album;
+```
 
 <br />
 
-#### Support
+### Support
 Support us by giving an A. 
