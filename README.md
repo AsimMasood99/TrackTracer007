@@ -118,7 +118,7 @@ const albumSchema = new schema({
 const album = mongoose.model('album', albumSchema);
 module.exports = album;
 ```
-<br />
+
 ##### Artists
 ```ruby
 const mongoose = require("mongoose");
@@ -148,7 +148,6 @@ const artistSchema = new schema({
 const artist = mongoose.model("artist", artistSchema);
 module.exports = artist;
 ```
-<br />
 #### Playlist 
 ```ruby
 const mongoose = require("mongoose");
@@ -182,7 +181,6 @@ const playlistSchema = new schema({
 const playlist = mongoose.model("playlist", playlistSchema);
 module.exports = playlist;
 ```
-<br />
 #### Songs 
 ```ruby
 const mongoose = require('mongoose');
@@ -206,7 +204,6 @@ const songSchema = new schema({
 const song = mongoose.model('song', songSchema);
 module.exports = song;
 ```
-<br />
 #### Users 
 ```ruby
 const mongoose = require("mongoose");
@@ -271,9 +268,6 @@ const userSchema = new schema({
 const user = mongoose.model("user", userSchema);
 module.exports = user;
 ```
-<br />
-
-
 
 ### Support
 Support us by giving an A. 
