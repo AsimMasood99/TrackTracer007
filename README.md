@@ -3,8 +3,8 @@ An interactive music platform with cross-user collaboration and collaborative pl
 
 ### Project Overview
 TrackTracer007 is a dynamic database application designed to revolutionize the way users interact with music. It allows users to follow artists, like songs, save albums, create playlists, and even follow other users. With TrackTracer007, users can also view others' followed artists and liked songs, and collaborate on playlists with mutual followers, fostering a community-based music experience.
-
-<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+<br />
+<br />
 ### Problem Statement
 Existing music applications often restrict cross-user interaction, limiting individuals to their own playlists. Additionally, sharing playlists with others typically requires a third-party app. TrackTracer007 aims to bridge this gap by enabling seamless, interactive music sharing and collaboration within a single platform.
 
