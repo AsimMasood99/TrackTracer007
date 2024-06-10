@@ -83,7 +83,7 @@ Attributes: User_ID (foreign key), Friend_ID (foreign key).
 
 <br />
 
-### Schmema 
+### Schmema (Latest Database State)
 
 ![WhatsApp Image 2024-06-10 at 22 46 13_3b8b693b](https://github.com/AsimMasood99/TrackTracer007/assets/130085532/12212799-caed-4f90-8869-455ba5aed04e)
 
