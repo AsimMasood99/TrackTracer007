@@ -1,7 +1,7 @@
 # TrackTracer007
-A Comprehensive Database for Managing Artists, Albums, and Songs
+An interactive music platform with cross-user collaboration and collaborative playlists.
 
-## Project Overview
+### Project Overview
 TrackTracer007 is a dynamic database application designed to revolutionize the way users interact with music. It allows users to follow artists, like songs, save albums, create playlists, and even follow other users. With TrackTracer007, users can also view others' followed artists and liked songs, and collaborate on playlists with mutual followers, fostering a community-based music experience.
 
 ### Problem Statement
@@ -13,10 +13,8 @@ Existing music applications often restrict cross-user interaction, limiting indi
 - HTML5
 - CSS3
 - JavaScript
-
 #### Backend:
 - Node.js with Express framework
-
 #### Database
 - MongoDB with Mongoose ODM for Node.js
 
@@ -60,26 +58,27 @@ Our database includes the following entities:
 
 
 
-1. Album
+1. **Album**
 Attributes: Album_ID (primary key), Title, Number_of_songs, Release_date, Artist_id (foreign key).
-2. Artist
+2. **Artist**
 Attributes: Artist_ID (primary key), Artist_name, Country, Joining_date.
-3. Song
+3. **Song**
 Attributes: Song_ID (primary key), Title, Duration, Album_ID (foreign key).
-4. User
+4. **User**
 Attributes: User_ID (primary key), Username, Password.
-5. Playlist
+5. **Playlist**
 Attributes: Playlist_ID (primary key), Title.
-6. Liked_Songs
+6. **Liked Songs**
 Attributes: User_ID (foreign key), Song_ID (foreign key).
-7. Access
+7. **Access**
 Attributes: User_ID (foreign key), Playlist_ID (foreign key).
-8. Playlist_Songs
+8. **Playlist_Songs**
 Attributes: Playlist_ID (foreign key), Song_ID (foreign key).
-9. Follower
+9. **Follower**
 Attributes: User_ID (foreign key), Artist_ID (foreign key).
-10. Friend
+10. **Friend**
 Attributes: User_ID (foreign key), Friend_ID (foreign key).
+
 
 
 #### Schmema 
