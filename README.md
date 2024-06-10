@@ -1,12 +1,12 @@
-# TrackTracer007
+# TrackTracer
 An interactive music platform with cross-user collaboration and collaborative playlists.
 
 ### Project Overview
-TrackTracer007 is a dynamic database application designed to revolutionize the way users interact with music. It allows users to follow artists, like songs, save albums, create playlists, and even follow other users. With TrackTracer007, users can also view others' followed artists and liked songs, and collaborate on playlists with mutual followers, fostering a community-based music experience.
+TrackTracer is a dynamic database application designed to revolutionize the way users interact with music. It allows users to follow artists, like songs, create playlists, and even follow other users. With TrackTracer, users can also view others' followed artists and liked songs, and collaborate on playlists with mutual followers, giving a community-based music experience.
 <br />
 <br />
 ### Problem Statement
-Existing music applications often restrict cross-user interaction, limiting individuals to their own playlists. Additionally, sharing playlists with others typically requires a third-party app. TrackTracer007 aims to bridge this gap by enabling seamless, interactive music sharing and collaboration within a single platform.
+To build an music app in which one can follow their favourite artists, save the songs they like, make friends and share along their musical experiences via collaborative playlists styles and exploring each others music tastes. 
 <br />
 <br />
 ### Tech Stack
@@ -43,13 +43,11 @@ View followed artists and liked songs of other users.
 
 5. **Collaborative Playlists**
 Create and edit collaborative playlists with mutual followers.
-Add and remove songs in a shared playlist environment.
+Add songs in a shared playlist environment.
 
 6. **Register as an Artist**
+If you are an artist, you can register your self on the app. 
 Registered artists can create albums and add songs, visible to all users and followers.
-
-7. **Concert Timings**
-View show and concert timings of different artists in the Concerts section.
 
 <br />
 <br />
@@ -59,7 +57,7 @@ View show and concert timings of different artists in the Concerts section.
 Our database includes the following entities:
 
 ![Screenshot 2024-06-11 001213](https://github.com/AsimMasood99/TrackTracer007/assets/130085532/8109bb9c-d99a-4718-af14-dfbc03785400)
-
+(OLD ERD)
 #### Description:
 
 1. **Album**
