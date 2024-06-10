@@ -273,6 +273,7 @@ app.post("/signup", async (req, res) => {
     displayName: req.body.displayname,
     userName: req.body.username,
     password: req.body.password,
+    following: []
   });
   username = req.body.displayname;
   newUser.save().then((result) => {
@@ -296,7 +297,7 @@ app.post("/login", async (req, res) => {
     } else if (verification_res.password == req.body.password) {
       //console.log("successfull");
       logged_in = true;
-      username = verification_res.userName; 
+      username = verification_res.displayName; 
       res.redirect("/");
     } else {
       res.redirect("/login");
@@ -344,4 +345,14 @@ app.post("/api/artist", async (req, res) => {
 app.get("/api/username", async (req, res) =>{
   res.send({usr: username});
 
+})
+
+app.post("/api/followArtist", async (req, res) =>{
+  console.log(artist_res);
+  console.log(username)
+  let usr = await user.findOne({displayName: username});
+  console.log(usr);
+  usr.following.push(artist_res);
+  await usr.save();
+  res.send({nth: "hello"});
 })

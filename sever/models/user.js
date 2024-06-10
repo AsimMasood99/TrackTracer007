@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const schema = mongoose.schema();
-
+const schema = mongoose.Schema;
+const artist = require("./artist");
 const userSchema = new schema({
     displayName: {
         type: String,
@@ -13,7 +13,12 @@ const userSchema = new schema({
     password: {
         type: String,
         required: true
-    }
+    },
+    following: [{
+        type: schema.Types.ObjectId,
+        ref: 'artist',
+        required: false
+    }]
 });
 
 const user = mongoose.model('user', userSchema);

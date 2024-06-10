@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const schema = mongoose.Schema;
-
+const artist = require("./artist");
 const songSchema = new schema({
     title: {
         type: String,

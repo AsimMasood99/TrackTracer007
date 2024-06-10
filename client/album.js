@@ -1,3 +1,4 @@
+import username from './home.js'
 fetch("/api/album").then((res) => {
   res.json().then((albums) => {
     name.innerHTML = albums.title;
