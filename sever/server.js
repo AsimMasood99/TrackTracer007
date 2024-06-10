@@ -282,6 +282,26 @@ app.post("/signup", async(req, res) => {
     });
 });
 
+app.post("/api/registerArtist", async(req,res) => {
+    let newArtist = new artist({
+        artistName: req.body.username,
+        genre: [],
+        profile_pic: req.body.pic,
+        albums: []
+    });
+    newArtist.genre.push(req.body.genre);
+    newArtist.save().then((result)=>{
+        console.log(result);
+        user.findOne({displayName: username}).then(usr => {
+            usr.isArtist = true;
+            usr.save().then(r => {
+                
+                res.json(result);
+            }) 
+        })
+    })
+})
+
 app.get("/login", async(req, res) => {
     res.sendFile(path.join(__dirname, "..", "client", "login.html"));
 });
@@ -554,6 +574,21 @@ app.get("/api/getFollowing", async(req,res)=>{
 app.get("/api/getLiked", async(req,res)=>{
     try {
         let result = await user.findOne({username: username}).populate("likedSongs")
+        res.json(result);
+    }
+    catch {
+        res.status(500).send("An error occurred while fetching users.");
+    }
+})
+
+app.get("/profile", async(req, res) => {
+    res.sendFile(path.join(__dirname, "..", "client", "profile.html"));
+});
+
+app.get("/api/getUserStatus", async(req,res)=>{
+    try {
+        let result = await user.findOne({displayName:username}).populate("artistRef"); 
+        console.log(result);
         res.json(result);
     }
     catch {

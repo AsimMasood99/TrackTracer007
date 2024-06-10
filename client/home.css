@@ -64,6 +64,10 @@ input[type="text"] {
   background-color: rgb(102, 27, 28);
 }
 
+.account {
+  all:unset;
+}
+
 .addFriend button,
 .viewFriends {
   background-color: #006064;

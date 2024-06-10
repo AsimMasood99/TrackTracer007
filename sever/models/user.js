@@ -43,6 +43,18 @@ const userSchema = new schema({
       required: false,
     },
   ],
+  isArtist: {
+      type: Boolean,
+      required: false,
+      default: false,
+  },
+  
+  artistRef: {
+    type: schema.Types.ObjectId, 
+    ref: "artist",
+    requried: false, 
+  },
+
 });
 
 const user = mongoose.model("user", userSchema);

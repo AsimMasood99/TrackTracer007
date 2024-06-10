@@ -19,7 +19,7 @@ try {
 
 username = result.usr;
 let accountInfo = document.querySelector(".account");
-accountInfo.innerHTML = username;
+accountInfo.textContent = username;
 let artistsList = document.querySelector(".artistList");
 let songList = document.querySelector(".songList");
 let newPlayBtn = document.querySelector(".newPlay");

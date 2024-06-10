@@ -10,6 +10,8 @@ try {
 username = result.usr;
 let accountInfo = document.querySelector(".account");
 accountInfo.innerHTML = username;
+
+
 let ablumName = document.querySelector(".albumName");
 let followBtn = document.querySelector("#followBtn");
 let reqAlbum;

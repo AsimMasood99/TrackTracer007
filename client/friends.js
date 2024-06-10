@@ -1,3 +1,16 @@
+let username = null;
+let result = null;
+try {
+	let res = await fetch("/api/username");
+	result = await res.json();
+} catch (err) {
+	console.log(err);
+}
+
+username = result.usr;
+let accountInfo = document.querySelector(".account");
+accountInfo.innerHTML = username;
+
 let friends = document.querySelector(".currentFriends");
 let addFriend = document.querySelector(".newFriend");
 let friendListDiv = document.querySelector(".select");
@@ -6,6 +19,9 @@ let followedArtists = document.querySelector(".followedArtists");
 let likeTitle = document.querySelector(".likeTitle");
 let followTitle = document.querySelector(".followTitle");
 let firstFriend = null;
+
+
+
 
 fetch("/api/getFriends")
   .then((res) => res.json())
