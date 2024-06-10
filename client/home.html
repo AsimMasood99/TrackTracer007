@@ -1,38 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TrackTracer</title>
-    <link rel="stylesheet" href="./home.css">
-    <script type = "module" src="./home.js" defer></script>
-</head>
-<body>
-    <header class = "header"></header>
-    <nav class = "navbar">
-        <div class = 'logo'>Logo</div>
-        <div class="account"></div>
+    <link rel="stylesheet" href="./home.css" />
+    <script type="module" src="./home.js" defer></script>
+  </head>
+  <body>
+    <header class="header"></header>
+    <nav class="navbar">
+      <div class="logo">Logo</div>
+      <div class="account"></div>
     </nav>
     <div class="searchWrap">
-        <form class = "searchForm" action="/api/search" method="post">
-            <input type="text" name = "query">
-            <button id = "searchButton">Search</button>
-        </form>
+      <form class="searchForm" action="/api/search" method="post">
+        <input type="text" name="query" />
+        <button id="searchButton">Search</button>
+      </form>
     </div>
     <div class="mainContent">
-        <div class="artists">
-            <h2 class = "following" >Your Artists</h2>
-            <div>
-                <ul class="artistList"></ul>
-            </div>
+      <div class="artists">
+        <h2 class="following">Your Artists</h2>
+        <div>
+          <ul class="artistList"></ul>
         </div>
-        <div class="playlists"></div>
-        <div class="likedSongs"></div>
+      </div>
+      <div class="playlists"></div>
+      <div class="likedSongs"></div>
     </div>
-    <footer>
-        Asim, Afsah
-    </footer>
-
-    
-</body>
+    <footer>Asim, shoaib</footer>
+  </body>
 </html>

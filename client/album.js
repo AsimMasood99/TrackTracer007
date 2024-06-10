@@ -4,7 +4,7 @@ fetch("/api/album").then((res) => {
     name.innerHTML = albums.title;
     profilePic.setAttribute("src", albums.image);
     albums.songs.forEach((song) => {
-      songs.innerHTML += <li>${song.title}</li>;
+      songs.innerHTML += `<li>${song.title}</li>`;
     });
     loader.classList.add("remove");
     mainBody.classList.remove("mainDataBefore");

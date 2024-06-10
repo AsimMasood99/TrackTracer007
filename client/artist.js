@@ -9,12 +9,12 @@ fetch("/api/artist").then((res) => {
 	res.json().then((artist) => {
 		name.innerHTML = artist[0].artistName;
 		artist[0].albums.forEach((album, idx) => {
-			albums.innerHTML += <li>${album.title}</li>;
+			albums.innerHTML += `<li>${album.title}</li>`;
 		});
 		reqAlbum = artist[0];
 		postData.album = reqAlbum.albums[0];
 		artist[1].songs.forEach((song, idx) => {
-			songs.innerHTML += <li>${song.title}</li>;
+			songs.innerHTML += `<li>${song.title}</li>`;
 			songCount++;
 		});
 		if (songCount <= 12) {
@@ -81,7 +81,7 @@ albums.addEventListener("click", (e) => {
 		.then((data) => {
 			songs.innerHTML = "";
 			data.songs.forEach((song) => {
-				songs.innerHTML += <li>${song.title}</li>;
+				songs.innerHTML += `<li>${song.title}</li>`;
 				songCount++;
 			});
 			console.log(songCount);
