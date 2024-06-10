@@ -9,6 +9,7 @@ const userSchema = new schema({
   userName: {
     type: String,
     required: true,
+    unique: true,
   },
   password: {
     type: String,

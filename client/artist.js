@@ -11,7 +11,7 @@ username = result.usr;
 let accountInfo = document.querySelector(".account");
 accountInfo.innerHTML = username;
 let ablumName = document.querySelector(".albumName");
-
+let followBtn = document.querySelector("#followBtn");
 let reqAlbum;
 let postData = {
 	album: {},
@@ -20,7 +20,7 @@ let postData = {
 let songCount = 0;
 fetch("/api/artist").then((res) => {
 	res.json().then((artist) => {
-		name.innerHTML = artist[0].artistName;
+		name.textContent = artist[0].artistName;
 		artist[0].albums.forEach((album, idx) => {
 			albums.innerHTML += <li>${album.title}</li>;
 		});
@@ -42,6 +42,20 @@ fetch("/api/artist").then((res) => {
 		loader.classList.add("remove");
 		mainBody.classList.remove("mainDataBefore");
 		mainBody.classList.add("mainDataAfter");
+
+		fetch("/api/getFollowing").then((res) => {
+			res.json().then((following) => {
+				console.log(following);
+				following.following.forEach((i) => {
+					if (i.artistName == name.textContent) {
+						followBtn.textContent = "Following";
+						return;
+					}
+				});
+				if (followBtn.textContent == "")
+					followBtn.textContent = "Follow";
+			});
+		});
 	});
 });
 
@@ -53,20 +67,24 @@ let albums = document.querySelector(".albumNames");
 let profilePic = document.querySelector(".profilePicture");
 let followbtn = document.querySelector("#followBtn");
 followbtn.addEventListener("click", (e) => {
-	console.log("follow ");
-	fetch("/api/followArtist", {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-		},
-	})
-		.then((response) => {
-			if (!response.ok) throw new Error("Network response was not ok");
-			else return response.json();
+	if (followbtn.textContent != "Following") {
+		console.log("follow ");
+		fetch("/api/followArtist", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
 		})
-		.then((data) => {
-			console.log(data);
-		});
+			.then((response) => {
+				if (!response.ok)
+					throw new Error("Network response was not ok");
+				else return response.json();
+			})
+			.then((data) => {
+				console.log(data);
+				followBtn.textContent = "Following";
+			});
+	}
 });
 
 albums.addEventListener("click", (e) => {

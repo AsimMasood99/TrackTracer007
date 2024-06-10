@@ -540,3 +540,23 @@ app.get("/api/logout", async(req, res) => {
     logged_in = false;
     res.redirect("/login")
 })
+
+app.get("/api/getFollowing", async(req,res)=>{
+    try {
+        let result = await user.findOne({username: username}).populate("following");
+        res.json(result)
+    }
+    catch (err) {
+        res.status(500).send("An error occurred while fetching users.");
+    }
+})
+
+app.get("/api/getLiked", async(req,res)=>{
+    try {
+        let result = await user.findOne({username: username}).populate("likedSongs")
+        res.json(result);
+    }
+    catch {
+        res.status(500).send("An error occurred while fetching users.");
+    }
+})
