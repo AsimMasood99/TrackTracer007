@@ -7,9 +7,8 @@ TrackTracer007 is a dynamic database application designed to revolutionize the w
 <br />
 ### Problem Statement
 Existing music applications often restrict cross-user interaction, limiting individuals to their own playlists. Additionally, sharing playlists with others typically requires a third-party app. TrackTracer007 aims to bridge this gap by enabling seamless, interactive music sharing and collaboration within a single platform.
-
-
-
+<br />
+<br />
 ### Tech Stack
 #### Frontend:
 - HTML5
@@ -19,9 +18,8 @@ Existing music applications often restrict cross-user interaction, limiting indi
 - Node.js with Express framework
 #### Database
 - MongoDB with Mongoose ODM for Node.js
-
-
-
+<br />
+<br />
 ### Project Features
 1. **Artist Management**
 Browse different artists and their discography.
@@ -52,9 +50,11 @@ Registered artists can create albums and add songs, visible to all users and fol
 7. **Concert Timings**
 View show and concert timings of different artists in the Concerts section.
 
-
+<br />
+<br />
 
 ### Database Design
+<br />
 #### ERD
 Our database includes the following entities:
 
@@ -83,7 +83,7 @@ Attributes: User_ID (foreign key), Artist_ID (foreign key).
 10. **Friend**
 Attributes: User_ID (foreign key), Friend_ID (foreign key).
 
-
+<br />
 
 #### Schmema 
 
@@ -97,3 +97,5 @@ Attributes: User_ID (foreign key), Friend_ID (foreign key).
 
 ![WhatsApp Image 2024-06-10 at 22 46 30_15da07ea](https://github.com/AsimMasood99/TrackTracer007/assets/130085532/9cdbbbb1-308f-4537-8e19-3e2d23fce612)
 
+#### Support Us
+Support us by giving an A
